@@ -3,8 +3,6 @@ import cors from 'cors'
 import compression from 'compression'
 import morgan from 'morgan'
 import bodyParser from 'body-parser'
-import { errorHandler as queryErrorHandler } from 'querymen'
-import { errorHandler as bodyErrorHandler } from 'bodymen'
 import { env } from '../../config'
 
 export default (apiRoot, routes) => {
@@ -20,8 +18,30 @@ export default (apiRoot, routes) => {
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(bodyParser.json())
   app.use(apiRoot, routes)
-  app.use(queryErrorHandler())
-  app.use(bodyErrorHandler())
+
+  // error handlers
+
+  // development error handler
+  // will print stacktrace
+  if (env === 'development') {
+    app.use(function (err, req, res) {
+      res.status(err.status || 500)
+      res.json({
+        message: err.message,
+        error: err
+      })
+    })
+  }
+
+  // production error handler
+  // no stacktraces leaked to user
+  app.use(function (err, req, res) {
+    res.status(err.status || 500)
+    res.json({
+      message: err.message,
+      error: {}
+    })
+  })
 
   return app
 }

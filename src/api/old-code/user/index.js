@@ -4,7 +4,7 @@ import { middleware as body } from 'bodymen'
 import { password as passwordAuth, master, token } from '../../services/passport'
 import { index, showMe, show, create, update, updatePassword, destroy } from './controller'
 import { schema } from './model'
-export User, { schema } from './model'
+// export User, { schema } from './model'
 
 const router = new Router()
 const { email, password, name, picture, role } = schema.tree

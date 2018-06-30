@@ -1,7 +1,10 @@
 import http from 'http'
 import { env, port, ip, apiRoot } from './config'
 import express from './services/express'
+import { init } from './services/db/knex'
 import api from './api'
+
+init()
 
 const app = express(apiRoot, api)
 const server = http.createServer(app)

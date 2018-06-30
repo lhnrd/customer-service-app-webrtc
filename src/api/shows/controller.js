@@ -1,8 +1,9 @@
-import knex from '../../services/db/knex'
+import { get } from '../../services/db/knex'
 import { success } from '../../services/response'
 
 function Shows () {
-  return knex('shows')
+  const knexInstance = get()
+  return knexInstance('shows')
 }
 
 export const readAll = (req, res, next) =>

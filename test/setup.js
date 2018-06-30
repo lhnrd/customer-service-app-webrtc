@@ -1,6 +1,8 @@
 import { EventEmitter } from 'events'
+import knex from '../src/services/db/knex'
 
 EventEmitter.defaultMaxListeners = Infinity
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000
 
 global.Array = Array
 global.Date = Date
@@ -17,3 +19,11 @@ global.Error = Error
 global.TypeError = TypeError
 global.parseInt = parseInt
 global.parseFloat = parseFloat
+
+beforeAll(() => {
+  knex.init()
+})
+
+afterAll(() => {
+  knex.destroy()
+})

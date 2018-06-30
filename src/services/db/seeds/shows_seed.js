@@ -2,6 +2,7 @@ exports.seed = function (knex, Promise) {
   return knex('shows').del() // Deletes ALL existing entries
     .then(function () { // Inserts seed entries one by one in series
       return knex('shows').insert({
+        id: 1,
         name: 'Suits',
         channel: 'USA Network',
         genre: 'Drama',
@@ -10,6 +11,7 @@ exports.seed = function (knex, Promise) {
       })
     }).then(function () {
       return knex('shows').insert({
+        id: 2,
         name: 'Game of Thrones',
         channel: 'HBO',
         genre: 'Fantasy',
@@ -18,6 +20,7 @@ exports.seed = function (knex, Promise) {
       })
     }).then(function () {
       return knex('shows').insert({
+        id: 3,
         name: 'South Park',
         channel: 'Comedy Central',
         genre: 'Comedy',
@@ -26,6 +29,7 @@ exports.seed = function (knex, Promise) {
       })
     }).then(function () {
       return knex('shows').insert({
+        id: 4,
         name: 'Mad Men',
         channel: 'AMC',
         genre: 'Drama',

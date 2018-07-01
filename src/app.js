@@ -1,10 +1,12 @@
 import http from 'http'
+import { Model } from 'objection'
 import { env, port, ip, apiRoot } from './config'
 import express from './services/express'
 import { init } from './services/db/knex'
 import api from './api'
 
-init()
+const knex = init()
+Model.knex(knex)
 
 const app = express(apiRoot, api)
 const server = http.createServer(app)

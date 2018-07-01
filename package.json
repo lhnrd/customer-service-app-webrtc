@@ -37,6 +37,8 @@
     "knex": "^0.14.6",
     "morgan": "^1.7.0",
     "objection": "^1.1.10",
+    "objection-guid": "^3.0.1",
+    "objection-password": "^1.0.0",
     "passport": "^0.4.0",
     "passport-http": "^0.3.0",
     "passport-http-bearer": "^1.0.1",

@@ -3,9 +3,9 @@ import { apiRoot } from '../../config'
 import express from '../../services/express'
 import routes from '.'
 
-const app = () => express(apiRoot, routes)
-
 describe('shows route', () => {
+  const app = () => express(apiRoot, routes)
+
   it('GET readAll', async () => {
     const response = await request(app())
       .get(apiRoot)

@@ -14,6 +14,7 @@
     "prod": "cross-env NODE_ENV=production nodemon -i \"*.test.js\" -r dotenv-safe/config .",
     "start": "node .",
     "test": "jest",
+    "test:watch": "jest --watch",
     "knex": "knex --knexfile src/config/knexfile.js"
   },
   "jest": {

@@ -1,4 +1,4 @@
-import { get } from '../../services/db/knex'
+import { get } from '../../services/db'
 import { success } from '../../services/response'
 
 function Shows () {

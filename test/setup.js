@@ -1,6 +1,5 @@
 import { EventEmitter } from 'events'
-import knex from '../src/services/db/knex'
-import { Model } from 'objection'
+import database from '../src/services/db'
 
 EventEmitter.defaultMaxListeners = Infinity
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000
@@ -22,9 +21,9 @@ global.parseInt = parseInt
 global.parseFloat = parseFloat
 
 beforeAll(() => {
-  Model.knex(knex.init())
+  database.init()
 })
 
 afterAll(() => {
-  knex.destroy()
+  database.destroy()
 })

@@ -3699,9 +3699,17 @@ lodash.isstring@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/lodash.isstring/-/lodash.isstring-4.0.1.tgz#d527dfb5456eca7cc9bb95d5daeaf88ba54a5451"
 
+lodash.omit@~4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.omit/-/lodash.omit-4.5.0.tgz#6eb19ae5a1ee1dd9df0b969e66ce0b7fa30b5e60"
+
 lodash.once@^4.0.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
+
+lodash.pick@~4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/lodash.pick/-/lodash.pick-4.4.0.tgz#52f05610fff9ded422611441ed1fc123a03001b3"
 
 lodash.sortby@^4.7.0:
   version "4.7.0"
@@ -4211,6 +4219,17 @@ objection-password@^1.0.0:
   resolved "https://registry.yarnpkg.com/objection-password/-/objection-password-1.0.0.tgz#63bbcfd79adca561e25222cce842b72368f892e1"
   dependencies:
     bcrypt "^1.0.2"
+
+objection-timestamps@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/objection-timestamps/-/objection-timestamps-3.0.2.tgz#8967a198a052f8a828e25c1d247e9dcac43ceb67"
+
+objection-visibility@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/objection-visibility/-/objection-visibility-0.3.2.tgz#5cf99e61bd8dfba08b0d68aa8cb581527d333869"
+  dependencies:
+    lodash.omit "~4.5.0"
+    lodash.pick "~4.4.0"
 
 objection@^1.1.10:
   version "1.1.10"

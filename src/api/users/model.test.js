@@ -10,7 +10,7 @@ let user
 
 beforeAll(async () => {
   await User.query().truncate()
-  user = await User.query().insert(userData)
+  user = await User.query().insert(userData).returning('*')
 })
 
 afterAll(async () => {

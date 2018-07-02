@@ -9,12 +9,16 @@ const enhance = compose(guid(), timestamps(), visibility)
 const validator = new JoiValidator()
 
 class BaseModel extends enhance(Model) {
+  static createValidator () {
+    return validator
+  }
+
   static get columnNameMappers () {
     return snakeCaseMappers()
   }
 
-  static createValidator () {
-    return validator
+  static get schema () {
+    throw new Error('schema not implemented')
   }
 }
 

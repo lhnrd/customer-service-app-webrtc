@@ -15,12 +15,12 @@ export const UserSchema = Joi.object({
 })
 
 class User extends enhance(BaseModel) {
-  static get tableName () {
-    return 'users'
-  }
-
   static get schema () {
     return UserSchema
+  }
+
+  static get tableName () {
+    return 'users'
   }
 }
 

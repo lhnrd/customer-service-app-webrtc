@@ -1,19 +1,24 @@
 import Knex from 'knex'
+import { knexSnakeCaseMappers, Model } from 'objection'
 import { knex as knexConfig } from '../../config'
 
 let knex = null
 
 export function init () {
   if (knex) {
-    throw new Error("There's already a knex database connection.")
+    throw new Error("There's already a database connection.")
   }
-  knex = Knex(knexConfig)
+  knex = Knex({
+    ...knexConfig,
+    ...knexSnakeCaseMappers()
+  })
+  Model.knex(knex)
   return knex
 }
 
 export async function destroy () {
   if (!knex) {
-    throw new Error("There's no knex database connection.")
+    throw new Error("There's no database connection.")
   }
   await knex.destroy()
   const conn = knex
@@ -23,7 +28,7 @@ export async function destroy () {
 
 export function get () {
   if (!knex) {
-    throw new Error("There's no knex database connection.")
+    throw new Error("There's no database connection.")
   }
   return knex
 }

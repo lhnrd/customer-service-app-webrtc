@@ -1,18 +1,15 @@
-import { get } from '../../services/db/knex'
+import User from './model'
 import { success } from '../../services/response'
 
-function Shows () {
-  const knexInstance = get()
-  return knexInstance('shows')
-}
-
 export const readAll = (req, res, next) =>
-  Shows()
+  User
+    .query()
     .select()
     .then(success(res))
 
 export const read = ({ params }, res, next) =>
-  Shows()
+  User
+    .query()
     .where('id', params.id)
     .first()
     .then(success(res))

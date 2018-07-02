@@ -1,6 +1,10 @@
+import { compose } from 'objection'
+import password from 'objection-password'
+
 import BaseModel from '../../common/base-model'
 
-class User extends BaseModel {
+const enhance = compose(password())
+class User extends enhance(BaseModel) {
   static get tableName () {
     return 'users'
   }

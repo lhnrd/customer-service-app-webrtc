@@ -33,6 +33,7 @@
     "compression": "^1.7.1",
     "cors": "^2.8.4",
     "express": "^4.16.2",
+    "joi": "^13.4.0",
     "jsonwebtoken": "^8.1.0",
     "knex": "^0.14.6",
     "morgan": "^1.7.0",

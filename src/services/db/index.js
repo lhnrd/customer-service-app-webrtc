@@ -1,5 +1,5 @@
 import Knex from 'knex'
-import { Model } from 'objection'
+import { knexSnakeCaseMappers, Model } from 'objection'
 import { knex as knexConfig } from '../../config'
 
 let knex = null
@@ -8,7 +8,10 @@ export function init () {
   if (knex) {
     throw new Error("There's already a database connection.")
   }
-  knex = Knex(knexConfig)
+  knex = Knex({
+    ...knexConfig,
+    ...knexSnakeCaseMappers()
+  })
   Model.knex(knex)
   return knex
 }

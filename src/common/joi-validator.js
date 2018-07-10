@@ -4,13 +4,12 @@ import Joi from 'joi'
 class JoiValidator extends Validator {
   validate ({ model, json }) {
     const schema = model.constructor.schema
-    const validation = Joi.validate(json, schema)
+    const { error: ValidationError, value } = Joi.validate(json, schema)
 
-    if (validation.error) {
-      const { error: ValidationError } = validation
+    if (ValidationError) {
       throw ValidationError
     } else {
-      return json
+      return value
     }
   }
 }

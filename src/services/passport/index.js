@@ -1,16 +1,21 @@
 import passport from 'passport'
-import { Schema } from 'bodymen'
 import { BasicStrategy } from 'passport-http'
 import { Strategy as BearerStrategy } from 'passport-http-bearer'
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt'
 import { jwtSecret, masterKey } from '../../config'
-import User, { schema } from '../../api/user/model'
+import User, { UserSchema, USER_ROLE_OPTIONS } from '../../api/users/model'
+
+const formatError = (error) =>
+  error.isJoi ? {
+    message: error.details.map(detail => detail.message),
+    error
+  } : error
 
 export const password = () => (req, res, next) =>
-  passport.authenticate('password', { session: false }, (err, user, info) => {
-    if (err && err.param) {
-      return res.status(400).json(err)
-    } else if (err || !user) {
+  passport.authenticate('password', { session: false }, (error, user, info) => {
+    if (error) {
+      return res.status(400).json(formatError(error))
+    } else if (!user) {
       return res.status(401).end()
     }
     req.logIn(user, { session: false }, (err) => {
@@ -22,9 +27,9 @@ export const password = () => (req, res, next) =>
 export const master = () =>
   passport.authenticate('master', { session: false })
 
-export const token = ({ required, roles = User.roles } = {}) => (req, res, next) =>
+export const token = ({ required, roles = USER_ROLE_OPTIONS } = {}) => (req, res, next) =>
   passport.authenticate('token', { session: false }, (err, user, info) => {
-    if (err || (required && !user) || (required && !~roles.indexOf(user.role))) {
+    if (err || (required && !user) || (required && !roles.includes(user.role))) {
       return res.status(401).end()
     }
     req.logIn(user, { session: false }, (err) => {
@@ -33,30 +38,36 @@ export const token = ({ required, roles = User.roles } = {}) => (req, res, next)
     })
   })(req, res, next)
 
-passport.use('password', new BasicStrategy((email, password, done) => {
-  const userSchema = new Schema({ email: schema.tree.email, password: schema.tree.password })
+passport.use('password', new BasicStrategy(async (email, password, done) => {
+  try {
+    await UserSchema.validate({ email, password }, { abortEarly: false })
+  } catch (error) {
+    return done(error)
+  }
 
-  userSchema.validate({ email, password }, (err) => {
-    if (err) done(err)
-  })
+  const user = await User
+    .query()
+    .where('email', email)
+    .first()
 
-  User.findOne({ email }).then((user) => {
-    if (!user) {
-      done(true)
-      return null
-    }
-    return user.authenticate(password, user.password).then((user) => {
-      done(null, user)
-      return null
-    }).catch(done)
-  })
+  if (!user) {
+    return done(null, false, { message: 'No user was found.' })
+  }
+
+  const isVerified = await user.verifyPassword(password)
+
+  if (isVerified) {
+    return done(null, user)
+  } else {
+    return done(null, false)
+  }
 }))
 
 passport.use('master', new BearerStrategy((token, done) => {
   if (token === masterKey) {
-    done(null, {})
+    return done(null, {}, { role: 'master' })
   } else {
-    done(null, false)
+    return done(null, false)
   }
 }))
 

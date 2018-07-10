@@ -3,7 +3,10 @@ import users from './users'
 // import auth from './auth'
 
 const router = new Router()
-
+/**
+ * // curl -v -H "Authorization: Bearer 123456789" http://127.0.0.1:3000/
+ * // curl -v http://127.0.0.1:3000/?access_token=123456789
+ */
 /**
  * @apiDefine master Master access only
  * You must pass `access_token` parameter or a Bearer Token authorization header

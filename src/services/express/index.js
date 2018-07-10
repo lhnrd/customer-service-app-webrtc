@@ -24,23 +24,25 @@ export default (apiRoot, routes) => {
   // development error handler
   // will print stacktrace
   if (env === 'development') {
-    app.use(function (err, req, res) {
-      res.status(err.status || 500)
-      res.json({
-        message: err.message,
-        error: err
-      })
+    app.use(function (error, req, res, next) {
+      res
+        .status(error.status || 500)
+        .json({
+          message: error.message,
+          error
+        })
     })
   }
 
   // production error handler
   // no stacktraces leaked to user
-  app.use(function (err, req, res) {
-    res.status(err.status || 500)
-    res.json({
-      message: err.message,
-      error: {}
-    })
+  app.use((error, req, res, next) => {
+    res
+      .status(error.status || 500)
+      .json({
+        message: error.message,
+        error: {}
+      })
   })
 
   return app

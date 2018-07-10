@@ -4,7 +4,7 @@ import express from '../../services/express'
 import routes from '.'
 import User from './model'
 
-let user1 = {
+let user = {
   name: 'Fake name',
   email: 'e@e.com',
   password: '123456',
@@ -13,12 +13,12 @@ let user1 = {
 
 beforeAll(async () => {
   await User.query().truncate()
-  await User.query().insert(user1).returning('*')
-  user1 = await User.query().select().first()
+  await User.query().insert(user).returning('*')
+  user = await User.query().select().first()
 })
 
 afterAll(async () => {
-  await user1 && user1.$query().delete()
+  await user && user.$query().delete()
 })
 
 describe('/users route', () => {
@@ -44,7 +44,7 @@ describe('/users route', () => {
 
   it('GET read', async () => {
     const response = await request(app())
-      .get(`${apiRoot}/${user1.id}`)
+      .get(`${apiRoot}/${user.id}`)
     const { body, headers, status } = response
     expect(status).toBe(200)
     expect(headers['content-type']).toMatch(/json/)

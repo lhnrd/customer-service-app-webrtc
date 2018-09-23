@@ -1,0 +1,104 @@
+% ----------------------------------------------------------
+% Introdução (obrigatório)
+% ----------------------------------------------------------
+\chapter[Introdução]{Introdução}\label{chap:introducao}
+
+Com a crescente competitividade e concorrência de mercado, uma das maneiras de um negócio se destacar e conseguir sobreviver nesse realidade é investir no relacionamento com o cliente. Esse investimento busca melhorar o grau de satisfação do cliente, que possui um papel muito importante na longevidade do negócio.
+
+Podemos identificar alguns problemas que afetam empresas no mercado atual em relação a este assunto:
+\begin{itemize}
+\item Empresas estão falhando em conhecer com precisão o perfil de seus consumidores; 
+\item Há grande preocupação em adquirir novos clientes, mas não em retê-los. De acordo com \cite{marketingmetrics2015}, o preço para conseguir um novo cliente pode ser até 14 vezes maior que nutrir e manter um que já está na base;
+\item A tecnologia no atendimento ao cliente resultou em impessoalidade, com cada vez mais robôs atendentes no lugar de pessoas.
+\end{itemize}
+
+Uma das maneiras utilizadas para realizar a comunicação com o cliente é através do Sistema de Atendimento ao Consumidor - mais conhecido como SAC - de cada empresa. O SAC pode ser visto como uma ferramenta para solucionar a grande demanda de dúvidas, solicitações e reclamações de sua base de clientes, consistindo em uma das possíveis estratégias para desenvolver um bom relacionamento com a base de clientes de uma empresa.
+
+Dados trazidos por \cite{hbrdelightcustomer2010} mostram que 48\% dos consumidores que tiveram experiências negativas com o SAC contam a dez ou mais pessoas; enquanto somente 23\% com experiências positivas contam a dez ou mais pessoas. Passamos da fase em que o atendimento ao cliente é um mero suporte, e ser eficiente nesse processo pode garantir a longevidade do seu negócio.
+
+Alguns problemas encontrados em sistemas de atendimento ao consumidor são:
+\begin{itemize}
+\item Um novo perfil de consumidor surgiu no mercado (os da Geração Y, ou Millennials). Esse perfil é mais fluído e versátil, exigindo inovação dos profissionais de atendimento \cite{salesforcestateofservice2015};
+\item Burocracia gerada por processos e tecnologias engessadas e obsoletas criam fluxos confusos e exaustivos para os consumidores, deixando o SAC no passado e por consequência ineficiente;
+\item As empresas não estão nos mesmos canais que os clientes e não conseguem acompanhar as mudanças rápidas que a Internet, as redes sociais e as novas tecnologias provocam nos consumidores todos os dias.
+\item O principal meio de atendimento ainda é via telefone (de acordo com \cite{cenariodossacs2015}). O consumidor atual não se encaixa mais nesse perfil. Dados mostram que 58\% dos brasileiros não estão dispostos a esperar mais que 5 minutos por uma resposta ao telefone de um SAC.
+\end{itemize}
+
+Com base nas necessidades do mercado de um melhor relacionamento com o cliente, nas deficiências dos atuais sistemas de atendimento e nas limitações técnicas que alguns consumidores enfrentam, decidimos desenvolver um Sistema de Atendimento ao Consumidor que funcione através de transmissão de vídeo utilizando a tecnologia WebRTC.
+
+\section{Motivação}
+Observa-se a existência de diversas aplicações \textit{web} voltadas para atendimento ao consumidor, com foco em soluções de \textit{tickets}, análise e categorização dos mesmos. 
+
+Entre elas é possível citar Zendesk\footnote{Disponível em: <https://www.zendesk.com/>. Acesso em 30 jun. 2017.} e Desk.com\footnote{Disponível em: <https://www.desk.com/>. Acesso em 30 jun. 2017.} como estado da arte desse segmento. O mesmo acontece no segmento de programas voltados para conversas através de vídeo. No estado da arte dessa categoria podemos citar appear.in\footnote{Disponível em: <https://www.appear.in/>. Acesso em 30 jun. 2017.}, disponível como aplicação web; Hangouts\footnote{Disponível em: <https://hangouts.google.com/>. Acesso em 30 jun. 2017.}, com versão Web e aplicativo móvel; e o Skype\footnote{Disponível em: <https://www.skype.com/>. Acesso em 30 jun. 2017.}, disponível para Web, \textit{desktop} e dispositivos móveis.
+
+Entretanto a correlação dos dois segmentos é pouco explorado, tanto no âmbito da web, como com programas \textit{desktop}, ou seja, sem a necessidade de instalação de programas e \textit{plugins}.  Para o usuário, a facilidade de acesso e a independência do sistema operacional são vantagens de uma aplicação web em relação à sua versão para uma plataforma específica. 
+
+Essa foi a principal motivação para este projeto: o desenvolvimento de uma aplicação web que faça a gerência de chamadas em vídeo e seja de fácil acesso para qualquer tipo de dispositivo. As chamadas iniciam-se por clientes que necessitam de assistência para o produto oferecido pela empresa, e são respondidas por atendentes designados para esse tipo de trabalho.
+
+\section{Objetivo}
+\subsection{Objetivo Geral}
+Desenvolver um Sistema de Atendimento ao Consumidor que funcione através de transmissão de vídeo. O sistema deverá dispor de uma área administrativa, onde um profissional responsável por prestar atendimento gerenciará seus chamados.
+
+\subsection{Objetivos Específicos}
+Os seguintes objetivos específicos são almejados por este trabalho:
+\begin{itemize}
+	\item Estudar as soluções existentes para atendimento ao consumidor por chamadas de vídeo e identificar os problemas existentes;
+	\item Desenvolver controle de acesso por parte dos atendentes.
+	\item Desenvolver uma API baseada no modelo \textit{RESTful} para cadastro de usuários e chamadas através de um servidor HTTP.
+	\item Desenvolver um módulo que oferece conexões através de \textit{WebSockets} para: 
+    	\begin{itemize}
+        	\item{Receber requisições de chamadas em vídeo \textit{realtime}.}
+            \item{Realizar o \textit{handshake} necessário para conexão \textit{peer-to-peer} entre navegadores.}
+      	\end{itemize}
+	\item Implementar interface de aplicação web que suporte atualização em tempo real de componentes sem que seja necessário a atualização da página.
+\end{itemize}
+
+\section{Justificativa}
+O programa desenvolvido será utilizado para resolver tanto problemas de negócio como problemas técnicos. Auxiliará no gerenciamento de chamadas de vídeo entre consumidores e profissionais de suporte/atendimento. Irá segurar chamadas, atendê-las e encerrá-las, mostrando dados e a localidade do cliente.
+
+O modelo de atendimento por vídeo faz as empresas modernas retomarem a proximidade com os clientes. A tecnologia pode ser utilizada para sermos mais pessoais e alcançarmos uma gama maior de perfis de consumidor, por exemplo: o tipo de consumidor que está acostumado a interagir com o vídeo - meio de comunicação que se tornou uma das principais ferramentas de ajuda e comunicação na nossa sociedade atual. 
+
+De acordo com \cite{customericare2015}, o vídeo é o canal de crescimento mais rápido. O número de chamadas de vídeo subiu de 600 milhões em 2010 para 30 bilhões em 2015. Enquanto isso, 2 bilhões de minutos de chamadas via Skype são feitos todos os dias e 36\% dos consumidores já expressam o desejo de terem suporte por meio de vídeo.
+
+No entanto, a transmissão por vídeo é uma tecnologia relativamente nova em sistemas de atendimento, e somente 0,2\% das empresas prestam atendimento via vídeo (de acordo com a \cite{contactcentredoing2014}). 
+Empresas de consultoria, da área da saúde, \textit{call} centers e advogados, por exemplo, já adotaram esse modelo. 
+
+No âmbito jurídico, o vídeo já está sendo utilizado para colher depoimentos em processos. Para áreas de recursos humanos, diversas empresas utilizam a chamada por vídeo para realizar entrevistas com candidatos de outra localidade, sendo que aproximadamente 60\% do gerentes usam esse recurso (\cite{videochatinfographic2013}).
+
+Já a transmissão de vídeo através de \textit{smartphones} e computadores pessoais não é um assunto tão recente. Utilizamos programas como Skype e \textit{plug-ins} de terceiros (ex.: Flash) para realizar chamadas entre dispositivos. Isso gera um \textit{overhead} para o consumidor, que fica a mercê da empresa para saber qual ferramenta utilizar para a chamada. Além disso, o usuário pode não ter em seu \textit{smartphone} o aplicativo ou \textit{plug-in} pré-instalado, e pode não dispor de espaço de armazenamento em seu dispositivo para realizar a instalação do software. O sistema desenvolvido precisará somente de um navegador (Google Chrome, Firefox, etc) em ambos nodos da conversação, ou seja, será suportado pela maioria dos \textit{smartphones}, computadores pessoais e \textit{tablets}. Assim, evitamos a necessidade de o usuário instalar programas adicionais em seu dispositivo.
+
+\section{Metodologia}
+Visando o sucesso deste projeto, foi adotada uma metodologia de trabalho que, no primeiro momento, consiste em reuniões periódicas com o orientador do trabalho de conclusão a fim de levantarmos requisitos e necessidades existentes do projeto.
+
+Na segunda etapa foram realizadas análises de relatórios, artigos e pesquisas sobre dificuldades que consumidores têm em relação ao serviços de atendimento ao consumidor de uma grande parcela das empresas brasileiras. Foi observado que grande parte dos desejos e reclamações dos clientes dizem respeito à SACs com possibilidade de chamada em vídeo.
+
+Com essa informação em mãos, uma pesquisa foi feita para encontrar as dificuldades que as empresas têm em fornecer um atendimento em vídeo de qualidade e fácil acesso. Análise feita em conjunto com sistemas utilizados para chamadas de videoconferência.
+
+Para justificar a implementação do sistema foram levantados requisitos unindo as dificuldades tanto dos consumidores quanto das empresas em realizar chamados de assistência técnica bem sucedidos através da transmissão de vídeo. 
+
+A solução encontrada diz respeito a um sistema que:
+\begin{itemize}
+\item Seja multi-dispositivo, ou seja, que funcione tanto em computadores pessoais como em dispositivos móveis;
+\item Multi-plataforma, isto é, que esteja disponível em diversos sistemas operacionais, tanto para computadores (\textit{Windows}, \textit{Linux}, \textit{Mac OS}) quanto para dispositivos móveis (\textit{iOS}, \textit{Android});
+\item Fácil ou nenhuma instalação, sem necessidade de instalação de aplicativos proprietários;
+\item Possua gerenciamento de chamadas.
+\end{itemize}
+
+Construído o modelo e as ideias da aplicação, o projeto de implementação foi desenvolvido. O projeto constitui-se de análise de requisitos, descrição de tecnologias e arquitetura, junto das suas funcionalidades.
+
+Com o projeto de implementação em mãos, o desenvolvimento do sistema será feito através de uma plataforma chamada \textit{NodeJS}, utilizando dois \textit{frameworks}: \textit{Express.js} e \textit{Socket.IO}, o primeiro responsável pela API e o segundo para conexão através de \textit{WebSockets}. O  servidor que fornece conexão por \textit{sockets} será responsável por realizar o estabelecimento da conexão entre dois nodos da rede, gerenciar chamadas e a API por guardar informações importantes sobre as mesmas.
+
+Após a conexão entre duas partes a transmissão de mídia (principalmente vídeo) será realizada por uma tecnologia moderna chamada \textit{WebRTC}, especializada em transmissão de mídia em tempo real. 
+
+Por fim, a publicação de todo sistema será feito através do \textit{Heroku}, uma empresa de \textit{PaaS} que fornece toda assistência para fornecer as aplicações online de forma simples e eficiente.
+
+\section{Organização do Texto}
+Conhecendo os objetivos, metodologia e a motivação por trás deste projeto, os próximos capítulos dão início às etapas de trabalho propostas.
+
+Apresenta-se no capítulo seguinte a fundamentação teórica: descrições sobre os conceitos teóricos que cercam o sistema a ser implementado, descrição sobre conceitos utilizados por outras aplicações do mesmo ramo e a evolução da tecnologia que foi usada como base na construção do projeto (WebRTC); 
+
+O terceiro capítulo contém uma análise das ferramentas existentes tanto na categoria de atendimento ao consumidor, como na de videoconferência, e uma breve discussão sobre os pontos de melhoria em comparação com este projeto.
+
+No quarto capítulo é descrita a analise de requisitos do software, ou seja, as funcionalidades que serão implementadas no mesmo. Junto dos requisitos serão demonstradas a modelagem e a arquitetura do projeto.
+
+A implementação do projeto encontra-se no quinto capítulo, no qual serão descritas a análise de requisitos, as decisões e descrições de tecnologias e ferramentas utilizadas, a arquitetura escolhida e as funcionalidades do sistema.

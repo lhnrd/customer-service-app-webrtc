@@ -11,7 +11,7 @@ let data = {
 
 beforeEach(truncate('users'))
 
-describe('/user model', async () => {
+describe('[model] User', async () => {
   const user = await createUser(data)
 
   describe('auth', () => {

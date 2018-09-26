@@ -1,6 +1,6 @@
 import request from 'supertest'
 import { apiRoot, masterKey } from '../../config'
-import { createUser } from '../../../test/fixtures'
+import { createUser, createUsers } from '../../../test/fixtures'
 import { truncate } from '../../../test/helpers'
 import express from '../../services/express'
 import { signSync } from '../../services/jwt'
@@ -14,17 +14,20 @@ describe('[endpoint] /users', () => {
   describe('admin', () => {
     describe('GET', () => {
       test('/ 200', async () => {
-        const admin = await createUser({
-          name: 'Admin',
-          email: 'useradmin@email.com',
-          role: 'admin'
-        })
-        await createUser() // second user
-        await createUser() // third user
+        const [admin] = await createUsers([
+          {
+            name: 'Admin',
+            email: 'useradmin@email.com',
+            role: 'admin'
+          },
+          {},
+          {}
+        ])
         const adminSession = signSync(admin.id)
         const { body, headers, status } = await request(app())
           .get(apiRoot)
           .query({ access_token: adminSession })
+
         expect(status).toBe(200)
         expect(headers['content-type']).toMatch(/json/)
         expect(Array.isArray(body)).toBe(true)
@@ -239,7 +242,6 @@ describe('[endpoint] /users', () => {
         const { status, body } = await request(app())
           .put(`${apiRoot}/${user.id}`)
           .send({ access_token: userSession, email: 'test@test.com', name: 'test' })
-
         expect(status).toBe(200)
         expect(typeof body).toBe('object')
         expect(body.email).toBe('test@test.com')

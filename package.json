@@ -14,8 +14,8 @@
     "lint": "eslint src",
     "prod": "cross-env NODE_ENV=production nodemon -i \"*.test.js\" -r dotenv-safe/config .",
     "start": "node .",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "test": "jest -i",
+    "test:watch": "yarn test --watch"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>/test/setup.js",

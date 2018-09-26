@@ -12,6 +12,39 @@ beforeEach(truncate('users'))
 
 describe('[endpoint] /users', () => {
   describe('admin', () => {
+    describe('DELETE', () => {
+      test('/:id 204', async () => {
+        const email = 'user@email.com'
+        const [admin, user] = await createUsers([
+          {
+            name: 'Admin',
+            email: 'useradmin@email.com',
+            role: 'admin'
+          },
+          {
+            email
+          }
+        ])
+        const adminSession = signSync(admin.id)
+        const { status, body } = await request(app())
+          .delete(`${apiRoot}/${user.id}`)
+          .send({ access_token: adminSession })
+
+        expect(status).toBe(200)
+        expect(body.email).toEqual(email)
+      })
+
+      test('/:id 404', async () => {
+        const admin = await createUser({ role: 'admin' })
+        const adminSession = signSync(admin.id)
+        const { status } = await request(app())
+          .delete(apiRoot + '/5a21b571-c60f-4d1c-abfd-23e06900cb2e')
+          .send({ access_token: adminSession })
+
+        expect(status).toBe(404)
+      })
+    })
+
     describe('GET', () => {
       test('/ 200', async () => {
         const [admin] = await createUsers([
@@ -42,14 +75,14 @@ describe('[endpoint] /users', () => {
       })
     })
 
-    describe('PUT', () => {
+    describe('PATCH', () => {
       test('/:id 200', async () => {
         const admin = await createUser({ role: 'admin' })
         const user = await createUser({ name: 'othername' })
         const adminSession = signSync(admin.id)
 
         const { status, body } = await request(app())
-          .put(`${apiRoot}/${user.id}`)
+          .patch(`${apiRoot}/${user.id}`)
           .send({ access_token: adminSession, name: 'test' })
 
         expect(status).toBe(200)
@@ -61,7 +94,7 @@ describe('[endpoint] /users', () => {
         const admin = await createUser({ role: 'admin' })
         const adminSession = signSync(admin.id)
         const { status } = await request(app())
-          .put(apiRoot + '/5a21b571-c60f-4d1c-abfd-23e06900cb2e')
+          .patch(apiRoot + '/5a21b571-c60f-4d1c-abfd-23e06900cb2e')
           .send({ access_token: adminSession, name: 'test' })
 
         expect(status).toBe(404)
@@ -140,6 +173,15 @@ describe('[endpoint] /users', () => {
   })
 
   describe('unauth', () => {
+    describe('DELETE', () => {
+      test('/:id 401', async () => {
+        const user = await createUser()
+        const { status } = await request(app())
+          .delete(`${apiRoot}/${user.id}`)
+        expect(status).toBe(401)
+      })
+    })
+
     describe('GET', () => {
       test('/ 401', async () => {
         const { status } = await request(app())
@@ -173,10 +215,10 @@ describe('[endpoint] /users', () => {
       })
     })
 
-    describe('PUT', () => {
+    describe('PATCH', () => {
       test('/me 401', async () => {
         const { status } = await request(app())
-          .put(apiRoot + '/me')
+          .patch(apiRoot + '/me')
           .send({ name: 'test' })
         expect(status).toBe(401)
       })
@@ -184,7 +226,7 @@ describe('[endpoint] /users', () => {
       test('/:id 401', async () => {
         const user = await createUser()
         const { status } = await request(app())
-          .put(`${apiRoot}/${user.id}`)
+          .patch(`${apiRoot}/${user.id}`)
           .send({ name: 'test' })
         expect(status).toBe(401)
       })
@@ -192,6 +234,17 @@ describe('[endpoint] /users', () => {
   })
 
   describe('user', () => {
+    describe('DELETE', () => {
+      test('/:id 401', async () => {
+        const user = await createUser()
+        const userSession = signSync(user.id)
+        const { status } = await request(app())
+          .delete(`${apiRoot}/${user.id}`)
+          .send({ access_token: userSession })
+        expect(status).toBe(401)
+      })
+    })
+
     describe('GET', () => {
       test('/ 401', async () => {
         const user = await createUser()
@@ -214,7 +267,7 @@ describe('[endpoint] /users', () => {
       })
     })
 
-    describe('PUT', () => {
+    describe('PATCH', () => {
       test('/me 200', async () => {
         const user = await createUser()
         const userSession = signSync(user.id)
@@ -223,7 +276,7 @@ describe('[endpoint] /users', () => {
         expect(user.name).not.toBe('test')
 
         const { status, body } = await request(app())
-          .put(apiRoot + '/me')
+          .patch(apiRoot + '/me')
           .send({ access_token: userSession, email: 'test@test.com', name: 'test' })
 
         expect(status).toBe(200)
@@ -240,7 +293,7 @@ describe('[endpoint] /users', () => {
         expect(user.name).not.toBe('test')
 
         const { status, body } = await request(app())
-          .put(`${apiRoot}/${user.id}`)
+          .patch(`${apiRoot}/${user.id}`)
           .send({ access_token: userSession, email: 'test@test.com', name: 'test' })
         expect(status).toBe(200)
         expect(typeof body).toBe('object')
@@ -254,7 +307,7 @@ describe('[endpoint] /users', () => {
         const userOneSession = signSync(userOne.id)
 
         const { status } = await request(app())
-          .put(`${apiRoot}/${userTwo.id}`)
+          .patch(`${apiRoot}/${userTwo.id}`)
           .send({ access_token: userOneSession, name: 'test' })
         expect(status).toBe(401)
       })

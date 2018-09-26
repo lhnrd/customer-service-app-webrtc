@@ -63,3 +63,14 @@ export const update = ({ body, params, user }, res, next) =>
     .then(notFound(res))
     .then(success(res))
     .catch(next)
+
+export const destroy = ({ params }, res, next) =>
+  User
+    .query()
+    .delete()
+    .where('id', params.id)
+    .returning('*')
+    .first()
+    .then(notFound(res))
+    .then(success(res, 200))
+    .catch(next)

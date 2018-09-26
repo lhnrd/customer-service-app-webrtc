@@ -22,7 +22,6 @@
     "testEnvironment": "node"
   },
   "dependencies": {
-    "bcrypt": "^1.0.3",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "compression": "^1.7.1",
@@ -31,6 +30,7 @@
     "joi": "^13.4.0",
     "jsonwebtoken": "^8.1.0",
     "knex": "^0.14.6",
+    "lodash.pick": "^4.4.0",
     "morgan": "^1.7.0",
     "objection": "^1.1.10",
     "objection-guid": "^3.0.1",

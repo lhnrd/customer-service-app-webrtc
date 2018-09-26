@@ -12,23 +12,27 @@ let data = {
 beforeEach(truncate('users'))
 
 describe('[model] User', async () => {
-  const user = await createUser(data)
+  let user
+
+  beforeAll(async () => {
+    user = await createUser(data)
+  })
 
   describe('auth', () => {
-    it('hashes password automatically', () => {
+    test('hashes password automatically', () => {
       expect(user.password).not.toBe(data.password)
     })
 
-    it('verify returns true if password is correct', async () => {
+    test('verify returns true if password is correct', async () => {
       expect(await user.verifyPassword(data.password)).toBe(true)
     })
 
-    it('verify returns false if password is wrong', async () => {
+    test('verify returns false if password is wrong', async () => {
       expect(await user.verifyPassword('123')).toBe(false)
     })
   })
 
-  it('throws error if data is invalid', async () => {
+  test('throws error if data is invalid', async () => {
     expect.assertions(1)
     try {
       await User.query().insert({ email: '', password: '' })

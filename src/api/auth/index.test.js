@@ -11,11 +11,12 @@ const app = () => express(apiRoot, routes)
 beforeEach(truncate('users'))
 
 test('POST /auth 201 (master)', async () => {
-  const user = await createUser()
+  const email = 'user@sac.com'
+  const user = await createUser({ email })
   const { status, body } = await request(app())
     .post(apiRoot)
     .query({ access_token: masterKey })
-    .auth('user@sac.com', '123456')
+    .auth(email, '123456')
   expect(status).toBe(201)
   expect(typeof body).toBe('object')
   expect(typeof body.token).toBe('string')

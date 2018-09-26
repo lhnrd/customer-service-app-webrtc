@@ -4,7 +4,7 @@ exports.up = function (knex, Promise) {
     table.string('email').notNullable().unique()
     table.string('password').notNullable()
     table.string('name')
-    table.enum('role', ['admin', 'user']).notNullable().defaultTo('user')
+    table.enum('role', ['admin', 'user']).defaultTo('user')
     table.timestamps()
   })
 }

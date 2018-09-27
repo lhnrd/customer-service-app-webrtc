@@ -29,7 +29,8 @@ export const master = () =>
 
 export const token = ({ required, roles = USER_ROLE_OPTIONS } = {}) => (req, res, next) =>
   passport.authenticate('token', { session: false }, (err, user, info) => {
-    if (err || (required && !user) || (required && !roles.includes(user.role))) {
+    if (err) return next(err)
+    if ((required && !user) || (required && !roles.includes(user.role))) {
       return res.status(401).end()
     }
     req.login(user, { session: false }, (err) => {

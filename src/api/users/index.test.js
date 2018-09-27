@@ -301,9 +301,9 @@ describe('[endpoint] /users', () => {
         expect(body.name).toBe('test')
       })
 
-      test('/:id 401 - another user', async () => {
-        const userOne = createUser()
-        const userTwo = createUser()
+      test.only('/:id 401 - another user', async () => {
+        const userOne = await createUser({ name: 'userone' })
+        const userTwo = await createUser({ name: 'usertwo' })
         const userOneSession = signSync(userOne.id)
 
         const { status } = await request(app())

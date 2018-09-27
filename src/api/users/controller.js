@@ -2,7 +2,7 @@ import pick from 'lodash.pick'
 import User from './model'
 import { notFound, success } from '../../services/response'
 
-const USER_DATA = ['email', 'name', 'password', 'role']
+const USER_DATA = ['email', 'name', 'role']
 
 export const create = ({ body }, res, next) =>
   User
@@ -53,16 +53,27 @@ export const readAll = (req, res, next) =>
 export const readMe = ({ user }, res, next) =>
   success(res)(user)
 
-export const update = ({ body, params, user }, res, next) =>
-  User
-    .query()
-    .patch(pick(body, USER_DATA))
-    .where('id', params.id === 'me' ? user.id : params.id)
-    .returning('*')
-    .first()
-    .then(notFound(res))
-    .then(success(res))
-    .catch(next)
+export const update = ({ body, params, user }, res, next) => {
+  const isAdmin = user.role === 'admin'
+  const isCurrentUser = user.id === params.id
+
+  if (isAdmin || isCurrentUser) {
+    return User
+      .query()
+      .patch(pick(body, USER_DATA))
+      .where('id', params.id === 'me' ? user.id : params.id)
+      .returning('*')
+      .first()
+      .then(notFound(res))
+      .then(success(res))
+      .catch(next)
+  }
+  return res.status(401).json({
+    message: 'You can\'t change other user\'s data',
+    param: 'password',
+    valid: false
+  })
+}
 
 export const destroy = ({ params }, res, next) =>
   User
@@ -72,5 +83,5 @@ export const destroy = ({ params }, res, next) =>
     .returning('*')
     .first()
     .then(notFound(res))
-    .then(success(res, 200))
+    .then(success(res))
     .catch(next)

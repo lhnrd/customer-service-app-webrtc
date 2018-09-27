@@ -9,11 +9,11 @@ const enhance = compose(password())
 export const USER_ROLE_OPTIONS = ['admin', 'user']
 
 export const UserSchema = Joi.object({
-  id: Joi.string().uuid(),
-  email: Joi.string().email().required(),
-  name: Joi.string(),
-  role: Joi.string().valid(USER_ROLE_OPTIONS).default('user'),
-  password: Joi.string().min(6).required()
+  id: Joi.string().uuid().optional(),
+  email: Joi.string().email(),
+  name: Joi.string().optional(),
+  role: Joi.string().valid(USER_ROLE_OPTIONS).optional(),
+  password: Joi.string().min(6)
 })
 
 class User extends enhance(BaseModel) {

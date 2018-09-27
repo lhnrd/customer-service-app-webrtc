@@ -18,7 +18,7 @@ export const password = () => (req, res, next) =>
     } else if (!user) {
       return res.status(401).end()
     }
-    req.logIn(user, { session: false }, (err) => {
+    req.login(user, { session: false }, (err) => {
       if (err) return res.status(401).end()
       next()
     })
@@ -29,10 +29,11 @@ export const master = () =>
 
 export const token = ({ required, roles = USER_ROLE_OPTIONS } = {}) => (req, res, next) =>
   passport.authenticate('token', { session: false }, (err, user, info) => {
-    if (err || (required && !user) || (required && !roles.includes(user.role))) {
+    if (err) return next(err)
+    if ((required && !user) || (required && !roles.includes(user.role))) {
       return res.status(401).end()
     }
-    req.logIn(user, { session: false }, (err) => {
+    req.login(user, { session: false }, (err) => {
       if (err) return res.status(401).end()
       next()
     })
@@ -76,11 +77,12 @@ passport.use('token', new JwtStrategy({
   jwtFromRequest: ExtractJwt.fromExtractors([
     ExtractJwt.fromUrlQueryParameter('access_token'),
     ExtractJwt.fromBodyField('access_token'),
-    ExtractJwt.fromAuthHeaderWithScheme('Bearer')
+    ExtractJwt.fromAuthHeaderAsBearerToken()
   ])
-}, ({ id }, done) => {
-  User.findById(id).then((user) => {
-    done(null, user)
-    return null
-  }).catch(done)
-}))
+}, ({ id }, done) =>
+  User
+    .query()
+    .findById(id)
+    .then(user => done(null, user))
+    .catch(done)
+))

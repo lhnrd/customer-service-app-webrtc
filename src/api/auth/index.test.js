@@ -1,33 +1,22 @@
 import request from 'supertest'
 import { masterKey, apiRoot } from '../../config'
-import User from '../users/model'
 import { verify } from '../../services/jwt'
 import express from '../../services/express'
+import { createUser } from '../../../test/fixtures'
+import { truncate } from '../../../test/helpers'
 import routes from '.'
 
 const app = () => express(apiRoot, routes)
 
-let user = {
-  name: 'User',
-  email: 'user@sac.com',
-  password: '123456'
-}
-
-beforeAll(async () => {
-  await User.query().truncate()
-  await User.query().insert(user).returning('*')
-  user = await User.query().select().first()
-})
-
-afterAll(async () => {
-  await user && user.$query().delete()
-})
+beforeEach(truncate('users'))
 
 test('POST /auth 201 (master)', async () => {
+  const email = 'user@sac.com'
+  const user = await createUser({ email })
   const { status, body } = await request(app())
     .post(apiRoot)
     .query({ access_token: masterKey })
-    .auth('user@sac.com', '123456')
+    .auth(email, '123456')
   expect(status).toBe(201)
   expect(typeof body).toBe('object')
   expect(typeof body.token).toBe('string')
@@ -67,6 +56,7 @@ test('POST /auth 401 (master) - user does not exist', async () => {
 })
 
 test('POST /auth 401 (master) - wrong password', async () => {
+  await createUser()
   const { status } = await request(app())
     .post(apiRoot)
     .query({ access_token: masterKey })

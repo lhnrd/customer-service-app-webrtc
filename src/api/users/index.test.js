@@ -4,6 +4,7 @@ import { createUser, createUsers } from '../../../test/fixtures'
 import { truncate } from '../../../test/helpers'
 import express from '../../services/express'
 import { signSync } from '../../services/jwt'
+import User from './model'
 import routes from '.'
 
 const app = () => express(apiRoot, routes)
@@ -13,7 +14,7 @@ beforeEach(truncate('users'))
 describe('[endpoint] /users', () => {
   describe('admin', () => {
     describe('DELETE', () => {
-      test('/:id 204', async () => {
+      test('/:id 200', async () => {
         const email = 'user@email.com'
         const [admin, user] = await createUsers([
           {
@@ -109,6 +110,7 @@ describe('[endpoint] /users', () => {
         const { status, body } = await request(app())
           .post(apiRoot)
           .send({ access_token: masterKey, email, password: '123456', role: 'user' })
+
         expect(status).toBe(201)
         expect(typeof body).toBe('object')
         expect(body.email).toBe(email)
@@ -301,7 +303,7 @@ describe('[endpoint] /users', () => {
         expect(body.name).toBe('test')
       })
 
-      test.only('/:id 401 - another user', async () => {
+      test('/:id 401 - another user', async () => {
         const userOne = await createUser({ name: 'userone' })
         const userTwo = await createUser({ name: 'usertwo' })
         const userOneSession = signSync(userOne.id)
@@ -309,6 +311,70 @@ describe('[endpoint] /users', () => {
         const { status } = await request(app())
           .patch(`${apiRoot}/${userTwo.id}`)
           .send({ access_token: userOneSession, name: 'test' })
+        expect(status).toBe(401)
+      })
+
+      const verifyPassword = async (password, userId) => {
+        const user = await User.query().findById(userId)
+        return user.verifyPassword(password)
+      }
+
+      test('/:id/password 200', async () => {
+        const email = 'user@email.com'
+        const user = await createUser({
+          email,
+          password: '123456'
+        })
+        const userSession = signSync(user.id)
+        const { status, body } = await request(app())
+          .put(`${apiRoot}/${user.id}/password`)
+          .send({ access_token: userSession, password: '654321' })
+
+        expect(status).toBe(200)
+        expect(typeof body).toBe('object')
+        expect(body.email).toBe(email)
+        expect(await verifyPassword('654321', body.id)).toBe(true)
+      })
+
+      test('/:id/password 400 - invalid password', async () => {
+        const email = 'user@email.com'
+        const user = await createUser({
+          email,
+          password: '123456'
+        })
+        const userSession = signSync(user.id)
+        const { status, body } = await request(app())
+          .put(`${apiRoot}/${user.id}/password`)
+          .send({ access_token: userSession, password: '321' })
+
+        expect(status).toBe(400)
+        expect(typeof body).toBe('object')
+        expect(body.errors[0].param).toBe('password')
+      })
+
+      test('/:id/password 401 - invalid authentication method', async () => {
+        const email = 'user@email.com'
+        const password = '123456'
+        const user = await createUser({
+          email,
+          password
+        })
+        const { status } = await request(app())
+          .put(`${apiRoot}/${user.id}/password`)
+          .auth(email, password)
+          .send({ password: '654321' })
+
+        expect(status).toBe(401)
+      })
+
+      test('/:id/password 401 - another user', async () => {
+        const userOne = await createUser()
+        const userTwo = await createUser()
+        const userOneSession = signSync(userOne.id)
+        const { status } = await request(app())
+          .put(`${apiRoot}/${userTwo.id}/password`)
+          .send({ access_token: userOneSession, password: '654321' })
+
         expect(status).toBe(401)
       })
     })

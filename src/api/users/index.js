@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { create, destroy, read, readAll, readMe, update } from './controller'
+import { create, destroy, read, readAll, readMe, update, updatePassword } from './controller'
 import { token } from '../../services/passport'
 
 const router = new Router()
@@ -70,6 +70,21 @@ router.post('/', create)
 router.patch('/:id',
   token({ required: true, roles: ['admin', 'user'] }),
   update)
+
+/**
+ * @api {put} /users/:id/password Update password
+ * @apiName UpdatePassword
+ * @apiGroup User
+ * @apiPermission admin, user
+ * @apiParam {String{6..}} password User's new password.
+ * @apiSuccess (Success 201) {Object} user User's data.
+ * @apiError {Object} 400 Some parameters may contain invalid values.
+ * @apiError 401 Current user access only.
+ * @apiError 404 User not found.
+ */
+router.put('/:id/password',
+  token({ required: true, roles: ['user'] }),
+  updatePassword)
 
 /**
  * @api {delete} /users/:id Delete user

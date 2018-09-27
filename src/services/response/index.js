@@ -13,6 +13,31 @@ export const notFound = (res) => (entity) => {
   return null
 }
 
+export const error = (res, next) => (error) => {
+  if (error.name === 'error' && error.code === '23505') { // database validation error
+    return res.status(409).json({
+      valid: false,
+      errors: [
+        {
+          param: 'email',
+          message: '"email" already registered'
+        }
+      ]
+    })
+  } else if (error.name === 'ValidationError' && error.isJoi) {
+    const errors = error.details.map(e => ({
+      param: e.context.key,
+      message: e.message
+    }))
+
+    res.status(400).json({
+      valid: false,
+      errors
+    })
+  }
+  return null
+}
+
 export const authorOrAdmin = (res, user, userField) => (entity) => {
   if (entity) {
     const isAdmin = user.role === 'admin'

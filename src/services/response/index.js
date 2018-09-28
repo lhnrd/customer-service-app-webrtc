@@ -13,7 +13,7 @@ export const notFound = (res) => (entity) => {
   return null
 }
 
-export const error = (res, next) => (error) => {
+export const error = (res) => (error) => {
   if (error.name === 'error' && error.code === '23505') { // database validation error
     return res.status(409).json({
       valid: false,
@@ -34,18 +34,6 @@ export const error = (res, next) => (error) => {
       valid: false,
       errors
     })
-  }
-  return null
-}
-
-export const authorOrAdmin = (res, user, userField) => (entity) => {
-  if (entity) {
-    const isAdmin = user.role === 'admin'
-    const isAuthor = entity[userField] && entity[userField].equals(user.id)
-    if (isAuthor || isAdmin) {
-      return entity
-    }
-    res.status(401).end()
   }
   return null
 }

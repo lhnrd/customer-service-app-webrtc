@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { create, destroy, read, readAll, readMe, update, updatePassword } from './controller'
-import { token } from '../../services/passport'
+import { master, token } from '../../services/passport'
 
 const router = new Router()
 
@@ -8,12 +8,13 @@ const router = new Router()
  * @api {get} /users Retrieve users
  * @apiName RetrieveUsers
  * @apiGroup User
- * @apiPermission public
+ * @apiPermission admin
  * @apiSuccess {Object[]} users List of users.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
-router.get('/', readAll)
-// token({ required: true, roles: ['admin'] }),
+router.get('/',
+  token({ required: true, roles: ['admin'] }),
+  readAll)
 
 /**
  * @api {get} /users/me Retrieve current user
@@ -52,8 +53,9 @@ router.get('/:id', read)
 * @apiError 401 Master access only.
 * @apiError 409 Email already registered.
 */
-router.post('/', create)
-// master(),
+router.post('/',
+  master(),
+  create)
 
 /**
  * @api {patch} /users/:id Update user

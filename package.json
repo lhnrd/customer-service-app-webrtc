@@ -2,6 +2,10 @@
   "name": "sac-client",
   "version": "0.1.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:lcsrinaldi/sac-client.git"
+  },
   "dependencies": {
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
@@ -12,5 +16,21 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "husky": "^1.0.1",
+    "lint-staged": "^7.3.0",
+    "prettier": "^1.14.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,json,css}": [
+      "prettier --single-quote --write",
+      "git add"
+    ]
   }
 }

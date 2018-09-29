@@ -9,5 +9,14 @@
   "rules": {
     "prettier/prettier": "error",
     "react/jsx-filename-extension": 0
+  },
+  "settings": {
+    "import/resolver": {
+      "babel-module": {
+        "alias": {
+          "src": "./src"
+        }
+      }
+    }
   }
 }

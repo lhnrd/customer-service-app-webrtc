@@ -8,7 +8,17 @@
   "plugins": ["prettier"],
   "rules": {
     "prettier/prettier": "error",
-    "react/jsx-filename-extension": 0
+    "react/jsx-filename-extension": 0,
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "**/*.spec.js",
+          "**/__tests__/**/*",
+          "**/setupTests.js"
+        ]
+      }
+    ]
   },
   "settings": {
     "import/resolver": {

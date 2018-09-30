@@ -1,6 +1,10 @@
 /* eslint-disable */
 const { injectBabelPlugin } = require('react-app-rewired');
 
+const importAntd = [
+  'import',
+  { libraryName: 'antd', libraryDirectory: 'es', style: 'css' },
+];
 const moduleResolver = [
   'module-resolver',
   {
@@ -15,7 +19,7 @@ const styledComponents = [
     fileName: false,
   },
 ];
-const babelPlugins = [moduleResolver, styledComponents];
+const babelPlugins = [importAntd, moduleResolver, styledComponents];
 
 module.exports = function override(config) {
   return babelPlugins.reduce(

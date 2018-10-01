@@ -1,21 +1,19 @@
 import React from 'react';
 import { Form, Icon, Input, Button } from 'antd';
 import { Formik } from 'formik';
+import { compose, withHandlers } from 'recompose';
+import { connect } from 'react-redux';
 
+import * as actions from 'src/actions/authenticate';
 import { validateForm, validationProps } from '../utils/validation';
 
 const FormItem = Form.Item;
 
-const LoginForm = () => (
+const LoginForm = ({ onSubmit }) => (
   <Formik
     initialValues={{ email: '', password: '' }}
     validate={validateForm}
-    onSubmit={(values, { setSubmitting }) => {
-      setTimeout(() => {
-        alert(JSON.stringify(values, null, 2));
-        setSubmitting(false);
-      }, 400);
-    }}
+    onSubmit={onSubmit}
   >
     {({
       values,
@@ -73,4 +71,19 @@ const LoginForm = () => (
   </Formik>
 );
 
-export default LoginForm;
+const mapDispatchToProps = {
+  authenticate: actions.authenticate,
+};
+
+export default compose(
+  connect(
+    null,
+    mapDispatchToProps
+  ),
+  withHandlers({
+    onSubmit: ({ authenticate }) => (values, { setSubmitting }) => {
+      authenticate(values);
+      setSubmitting(false);
+    },
+  })
+)(LoginForm);

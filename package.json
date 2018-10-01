@@ -15,6 +15,7 @@
     "start": "react-app-rewired start",
     "test": "react-app-rewired test --env=jsdom"
   },
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "@rebass/grid": "^6.0.0-4",
     "antd": "^3.9.3",

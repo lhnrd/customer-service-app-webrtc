@@ -5,10 +5,10 @@ import thunk from 'redux-thunk';
 import { devToolsEnhancer } from 'redux-devtools-extension'; // eslint-disable-line
 
 const configureStore = preloadedState => {
-  const middlewares = [apiMiddleware, logger, thunk];
+  const middlewares = [thunk, apiMiddleware, logger];
   const middlewareEnhancer = applyMiddleware(...middlewares);
 
-  const enhancers = [devToolsEnhancer(), middlewareEnhancer];
+  const enhancers = [middlewareEnhancer, devToolsEnhancer()];
   const composedEnhancers = compose(...enhancers);
 
   const rootReducer = () => ({

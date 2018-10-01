@@ -4,6 +4,8 @@ import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import { devToolsEnhancer } from 'redux-devtools-extension'; // eslint-disable-line
 
+import rootReducer from 'src/reducers';
+
 const configureStore = preloadedState => {
   const middlewares = [thunk, apiMiddleware, logger];
   const middlewareEnhancer = applyMiddleware(...middlewares);
@@ -11,14 +13,11 @@ const configureStore = preloadedState => {
   const enhancers = [middlewareEnhancer, devToolsEnhancer()];
   const composedEnhancers = compose(...enhancers);
 
-  const rootReducer = () => ({
-    user: 'lucas',
-  });
   const store = createStore(rootReducer, preloadedState, composedEnhancers);
 
-  // if (process.env.NODE_ENV !== 'production' && module.hot) {
-  //   module.hot.accept('./reducers', () => store.replaceReducer(rootReducer));
-  // }
+  if (process.env.NODE_ENV !== 'production' && module.hot) {
+    module.hot.accept('../reducers', () => store.replaceReducer(rootReducer));
+  }
 
   return store;
 };

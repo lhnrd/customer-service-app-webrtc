@@ -1,4 +1,5 @@
 import produce from 'immer';
+
 import {
   AUTH_FAILURE,
   AUTH_REQUEST,
@@ -7,6 +8,9 @@ import {
   CHECK_AUTH_SUCCESS,
   CHECK_AUTH_FAILURE,
 } from 'src/actions/auth';
+import els from 'src/utils/expirable-local-storage';
+
+const TOKEN = 'jwt_token';
 
 const authReducer = (
   state = {
@@ -25,10 +29,12 @@ const authReducer = (
         draft.isFetching = true;
         return;
       case AUTH_SUCCESS:
-        draft.errorMessage = null;
-        draft.isAuthenticated = true;
-        draft.isFetching = false;
-        draft.user = action.payload.user;
+        if (els.set(TOKEN, action.payload.token)) {
+          draft.errorMessage = null;
+          draft.isAuthenticated = true;
+          draft.isFetching = false;
+          draft.user = action.payload.user;
+        }
         return;
       case AUTH_FAILURE:
       case CHECK_AUTH_FAILURE:

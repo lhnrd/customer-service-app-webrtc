@@ -25,7 +25,7 @@
         "ignorePropertyModificationsFor": ["draft"]
       }
     ],
-    "default-case": "off"
+    "default-case": ["off"]
   },
   "settings": {
     "import/resolver": {

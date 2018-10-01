@@ -18,7 +18,14 @@
           "**/setupTests.js"
         ]
       }
-    ]
+    ],
+    "no-param-reassign": [
+      "error",
+      {
+        "ignorePropertyModificationsFor": ["draft"]
+      }
+    ],
+    "default-case": "off"
   },
   "settings": {
     "import/resolver": {

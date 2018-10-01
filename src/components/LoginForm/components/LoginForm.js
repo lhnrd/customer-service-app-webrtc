@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import { compose, withHandlers } from 'recompose';
 import { connect } from 'react-redux';
 
-import * as actions from 'src/actions/authenticate';
+import * as actions from 'src/actions/auth';
 import { validateForm, validationProps } from '../utils/validation';
 
 const FormItem = Form.Item;

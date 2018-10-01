@@ -3,7 +3,7 @@ import { apiMiddleware } from 'redux-api-middleware';
 import thunk from 'redux-thunk';
 import fetchMock from 'fetch-mock';
 
-import * as actions from '../authenticate';
+import * as actions from 'src/actions/auth';
 
 const middlewares = [thunk, apiMiddleware];
 const mockStore = configureMockStore(middlewares);

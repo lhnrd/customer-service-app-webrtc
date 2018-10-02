@@ -6,7 +6,7 @@ export default {
     if (!record) {
       return false;
     }
-    return new Date().getTime() < record.timestamp && JSON.parse(record.value);
+    return new Date().getTime() < record.timestamp && record.value;
   },
   set: (key, value, min = 120) => {
     const ms = min * 60 * 1000;

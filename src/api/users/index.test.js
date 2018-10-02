@@ -188,7 +188,7 @@ describe('[endpoint] /users', () => {
       test('/ 401', async () => {
         const { status } = await request(app())
           .get(apiRoot)
-        expect(status).toBe(200)
+        expect(status).toBe(401)
       })
 
       test('/me 401', async () => {
@@ -254,7 +254,7 @@ describe('[endpoint] /users', () => {
         const { status } = await request(app())
           .get(apiRoot)
           .query({ access_token: userSession })
-        expect(status).toBe(200)
+        expect(status).toBe(401)
       })
 
       test('/me 200', async () => {

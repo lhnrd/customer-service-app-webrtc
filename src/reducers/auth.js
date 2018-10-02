@@ -47,6 +47,7 @@ const authReducer = (
         draft.errorMessage = null;
         draft.isFetching = false;
         draft.user = action.payload;
+      // no default
     }
   });
 

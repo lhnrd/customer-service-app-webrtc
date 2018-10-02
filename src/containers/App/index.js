@@ -1,24 +1,19 @@
 import React, { Fragment } from 'react';
-import { Route, Switch } from 'react-router-dom';
-import { Button } from 'antd';
+import { Switch } from 'react-router-dom';
 
 import { APP_PATH, LOGIN_PATH } from 'src/routes/paths';
-import LoginPage from 'src/pages/LoginPage';
 import Global from 'src/styles/Global';
+import HomePage from 'src/pages/HomePage';
+import LoginPage from 'src/pages/LoginPage';
+import RouteAuthenticated from 'src/components/RouteAuthenticated';
+import RouteUnauthenticated from 'src/components/RouteUnauthenticated';
 
 const App = () => (
   <Fragment>
     <Global />
     <Switch>
-      <Route path={LOGIN_PATH} component={LoginPage} />
-      <Route
-        path={APP_PATH}
-        render={() => (
-          <div>
-            <Button>Test</Button>
-          </div>
-        )}
-      />
+      <RouteUnauthenticated path={LOGIN_PATH} component={LoginPage} />
+      <RouteAuthenticated path={APP_PATH} component={HomePage} />
     </Switch>
   </Fragment>
 );

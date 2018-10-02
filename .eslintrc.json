@@ -18,6 +18,12 @@
           "**/setupTests.js"
         ]
       }
+    ],
+    "no-param-reassign": [
+      "error",
+      {
+        "ignorePropertyModificationsFor": ["draft"]
+      }
     ]
   },
   "settings": {

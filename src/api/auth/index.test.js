@@ -6,14 +6,14 @@ import { createUser } from '../../../test/fixtures'
 import { truncate } from '../../../test/helpers'
 import routes from '.'
 
-const app = express(apiRoot, routes)
+const factory = express(apiRoot, routes)
 
 beforeEach(truncate('users'))
 
 test('POST /auth 201', async () => {
   const email = 'user@sac.com'
   const user = await createUser({ email })
-  const { status, body } = await request(app())
+  const { status, body } = await request(factory().app)
     .post(apiRoot)
     .auth(email, '123456')
   expect(status).toBe(201)
@@ -25,7 +25,7 @@ test('POST /auth 201', async () => {
 })
 
 test('POST /auth 400 - invalid email', async () => {
-  const { status, body } = await request(app())
+  const { status, body } = await request(factory().app)
     .post(apiRoot)
     .auth('invalid', '123456')
   expect(status).toBe(400)
@@ -35,7 +35,7 @@ test('POST /auth 400 - invalid email', async () => {
 })
 
 test('POST /auth 400 - invalid password', async () => {
-  const { status, body } = await request(app())
+  const { status, body } = await request(factory().app)
     .post(apiRoot)
     .auth('user@sac.com', '123')
   expect(status).toBe(400)
@@ -45,7 +45,7 @@ test('POST /auth 400 - invalid password', async () => {
 })
 
 test('POST /auth 401 - user does not exist', async () => {
-  const { status } = await request(app())
+  const { status } = await request(factory().app)
     .post(apiRoot)
     .auth('notuser@sac.com', '123456')
   expect(status).toBe(401)
@@ -53,14 +53,14 @@ test('POST /auth 401 - user does not exist', async () => {
 
 test('POST /auth 401 - wrong password', async () => {
   await createUser()
-  const { status } = await request(app())
+  const { status } = await request(factory().app)
     .post(apiRoot)
     .auth('user@sac.com', '654321')
   expect(status).toBe(401)
 })
 
 test('POST /auth 401 - missing auth', async () => {
-  const { status } = await request(app())
+  const { status } = await request(factory().app)
     .post(apiRoot)
   expect(status).toBe(401)
 })

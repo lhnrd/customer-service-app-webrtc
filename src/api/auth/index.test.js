@@ -6,7 +6,7 @@ import { createUser } from '../../../test/fixtures'
 import { truncate } from '../../../test/helpers'
 import routes from '.'
 
-const app = () => express(apiRoot, routes)
+const app = express(apiRoot, routes)
 
 beforeEach(truncate('users'))
 

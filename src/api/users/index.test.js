@@ -7,7 +7,7 @@ import { signSync } from '../../services/jwt'
 import User from './model'
 import routes from '.'
 
-const app = () => express(apiRoot, routes)
+const app = express(apiRoot, routes)
 
 beforeEach(truncate('users'))
 

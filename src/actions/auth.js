@@ -1,12 +1,9 @@
 import { RSAA } from 'redux-api-middleware';
 
+// authenticate
 export const AUTH_REQUEST = '@@auth/AUTH_REQUEST';
 export const AUTH_SUCCESS = '@@auth/AUTH_SUCCESS';
 export const AUTH_FAILURE = '@@auth/AUTH_FAILURE';
-
-export const CHECK_AUTH_REQUEST = '@@auth/CHECK_AUTH_REQUEST';
-export const CHECK_AUTH_SUCCESS = '@@auth/CHECK_AUTH_SUCCESS';
-export const CHECK_AUTH_FAILURE = '@@auth/CHECK_AUTH_FAILURE';
 
 export const authenticate = ({ email, password }) => ({
   [RSAA]: {
@@ -18,6 +15,11 @@ export const authenticate = ({ email, password }) => ({
     types: [AUTH_REQUEST, AUTH_SUCCESS, AUTH_FAILURE],
   },
 });
+
+// checkAuth
+export const CHECK_AUTH_REQUEST = '@@auth/CHECK_AUTH_REQUEST';
+export const CHECK_AUTH_SUCCESS = '@@auth/CHECK_AUTH_SUCCESS';
+export const CHECK_AUTH_FAILURE = '@@auth/CHECK_AUTH_FAILURE';
 
 export const checkAuth = () => ({
   [RSAA]: {

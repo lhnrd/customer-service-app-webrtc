@@ -5,10 +5,18 @@ import thunk from 'redux-thunk';
 import { devToolsEnhancer } from 'redux-devtools-extension'; // eslint-disable-line
 
 import authApiMiddleware from 'src/utils/auth-api-middleware';
+import createSocketMiddleware from 'src/utils/socket-middleware';
 import rootReducer from 'src/reducers';
 
 const configureStore = preloadedState => {
-  const middlewares = [thunk, authApiMiddleware, apiMiddleware, logger];
+  const socketMiddleware = createSocketMiddleware();
+  const middlewares = [
+    thunk,
+    authApiMiddleware,
+    apiMiddleware,
+    socketMiddleware,
+    logger,
+  ];
   const middlewareEnhancer = applyMiddleware(...middlewares);
 
   const enhancers = [middlewareEnhancer, devToolsEnhancer()];

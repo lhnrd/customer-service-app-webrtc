@@ -5,7 +5,8 @@ import morgan from 'morgan'
 import bodyParser from 'body-parser'
 import { env } from '../../config'
 
-export default (apiRoot, routes) => {
+export default (apiRoot, routes) => (composed = {}) => {
+  const { server } = composed
   const app = express()
 
   if (env === 'production' || env === 'development') {
@@ -44,5 +45,10 @@ export default (apiRoot, routes) => {
       })
   })
 
-  return app
+  composed.app = app
+  if (server) {
+    composed.server = server.on('request', app)
+  }
+
+  return composed
 }

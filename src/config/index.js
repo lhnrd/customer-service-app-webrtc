@@ -21,9 +21,10 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = {
   env: process.env.NODE_ENV || 'development',
   root: path.join(__dirname, '../../'),
-  port: process.env.API_PORT,
-  ip: process.env.API_HOST,
+  port: process.env.SERVER_PORT,
+  ip: process.env.SERVER_HOST,
   apiRoot: process.env.API_ROOT,
+  eventsRoot: process.env.EVENTS_ROOT,
   masterKey: requireProcessEnv('MASTER_KEY'),
   jwtSecret: requireProcessEnv('JWT_SECRET'),
   knex: require('./knexfile')[process.env.NODE_ENV]

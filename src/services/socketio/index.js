@@ -1,6 +1,6 @@
 import socketio from 'socket.io'
 
-export default (eventsRoot = '/socket.io', events = f => f) => (composed = {}) => {
+export default (eventsRoot = '', events = f => f) => (composed = {}) => {
   const { server } = composed
   const io = socketio({
     path: eventsRoot,

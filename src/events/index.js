@@ -1,3 +1,3 @@
 export default socket => {
-  console.log('Connected', socket)
+  console.log('Connected')
 }

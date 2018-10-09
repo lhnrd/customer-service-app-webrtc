@@ -1,10 +1,26 @@
 import React from 'react';
 import { Button } from 'antd';
+import { connect } from 'react-redux';
 
-const HomePage = () => (
+import { RSSA } from 'src/constants';
+/* eslint-disable */
+const HomePage = ({ test }) => (
   <div>
-    <Button>Test</Button>
+    <Button onClick={test}>Test</Button>
   </div>
 );
 
-export default HomePage;
+export default connect(
+  null,
+  {
+    test: () => ({
+      [RSSA]: {
+        event: 'testme',
+        message: {
+          a: 1,
+          lucas: true,
+        },
+      },
+    }),
+  }
+)(HomePage);

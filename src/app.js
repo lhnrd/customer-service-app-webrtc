@@ -9,7 +9,8 @@ import events from './events'
 
 init()
 
-const { app, io, server } = fp.compose(
+// socket.io setup must be the last
+const { app, io, server } = fp.pipe(
   express(apiRoot, api),
   socketio(eventsRoot, events)
 )({

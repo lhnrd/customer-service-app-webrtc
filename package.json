@@ -1,10 +1,10 @@
 {
-  "name": "sac-client",
+  "name": "sac-manager",
   "version": "0.1.0",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git@github.com:lcsrinaldi/sac-client.git"
+    "url": "git@github.com:lcsrinaldi/sac-manager.git"
   },
   "scripts": {
     "build": "react-app-rewired build",

@@ -1,4 +1,3 @@
-/* eslint-disable */
 const { injectBabelPlugin } = require('react-app-rewired');
 
 const importAntd = [

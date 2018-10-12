@@ -1,11 +1,16 @@
 {
-  "extends": ["airbnb", "prettier"],
+  "extends": [
+    "airbnb",
+    "prettier"
+  ],
   "env": {
     "browser": true,
     "jest": true,
     "es6": true
   },
-  "plugins": ["prettier"],
+  "plugins": [
+    "prettier"
+  ],
   "rules": {
     "prettier/prettier": "error",
     "react/jsx-filename-extension": 0,
@@ -15,14 +20,17 @@
         "devDependencies": [
           "**/*.spec.js",
           "**/__tests__/**/*",
-          "**/setupTests.js"
+          "**/setupTests.js",
+          "config-overrides.js"
         ]
       }
     ],
     "no-param-reassign": [
       "error",
       {
-        "ignorePropertyModificationsFor": ["draft"]
+        "ignorePropertyModificationsFor": [
+          "draft"
+        ]
       }
     ]
   },

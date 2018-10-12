@@ -13,21 +13,18 @@
     "lint:css": "stylelint './src/**/*.js'",
     "lint:js": "eslint src/**/*.js",
     "start": "react-app-rewired start",
-    "test": "react-app-rewired test --env=jsdom"
+    "test": "react-app-rewired test"
   },
-  "proxy": {
-    "/api": {
-      "target": "http://localhost:3001"
-    },
-    "/events": {
-      "target": "ws://localhost:3001",
-      "ws": true
+  "jest": {
+    "moduleNameMapper": {
+      "^src(.*)$": "<rootDir>/src$1"
     }
   },
   "dependencies": {
     "@rebass/grid": "^6.0.0-4",
     "antd": "^3.9.3",
     "formik": "^1.3.0",
+    "http-proxy-middleware": "^0.19.0",
     "immer": "^1.7.2",
     "local-storage": "^1.4.2",
     "prop-types": "^15.6.2",
@@ -35,7 +32,7 @@
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.5",
+    "react-scripts": "2.0.4",
     "recompose": "^0.30.0",
     "redux": "^4.0.0",
     "redux-actions": "^2.6.1",
@@ -49,7 +46,6 @@
     "babel-plugin-import": "^1.9.1",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-styled-components": "^1.8.0",
-    "eslint": "^5.3.0",
     "eslint-config-airbnb": "17.1.0",
     "eslint-config-prettier": "^3.1.0",
     "eslint-import-resolver-babel-module": "^4.0.0",
@@ -73,6 +69,12 @@
     "stylelint-config-styled-components": "^0.1.1",
     "stylelint-processor-styled-components": "^1.4.0"
   },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"

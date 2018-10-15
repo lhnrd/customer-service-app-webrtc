@@ -1,15 +1,17 @@
 import produce from 'immer';
 
-import {
+import { types } from 'src/actions/auth';
+import els from 'src/utils/expirable-local-storage';
+import { AUTH_TOKEN_KEY } from 'src/constants';
+
+const {
   AUTH_FAILURE,
   AUTH_REQUEST,
   AUTH_SUCCESS,
   CHECK_AUTH_REQUEST,
   CHECK_AUTH_SUCCESS,
   CHECK_AUTH_FAILURE,
-} from 'src/actions/auth';
-import els from 'src/utils/expirable-local-storage';
-import { AUTH_TOKEN_KEY } from 'src/constants';
+} = types;
 
 const authReducer = (
   state = {

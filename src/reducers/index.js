@@ -1,5 +1,11 @@
-import auth from './auth';
+import { combineReducers } from 'redux';
 
-const rootReducer = auth;
+import auth from './auth';
+import socket from './socket';
+
+const rootReducer = combineReducers({
+  auth,
+  socket,
+});
 
 export default rootReducer;

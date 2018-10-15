@@ -1,1 +1,1 @@
-export const selectIsAuthenticated = state => state.isAuthenticated; // eslint-disable-line
+export const selectIsAuthenticated = state => state.auth.isAuthenticated; // eslint-disable-line

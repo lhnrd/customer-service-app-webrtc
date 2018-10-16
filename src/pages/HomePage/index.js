@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button } from 'antd-mobile';
 import { connect } from 'react-redux';
 
 import { RSSA } from 'src/constants';

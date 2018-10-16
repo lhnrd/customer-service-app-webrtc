@@ -1,11 +1,11 @@
 import io from 'socket.io-client';
 
-import { RSSA } from 'src/constants';
+import { FSA, RSSA } from 'src/constants';
 
 const eventsRoot = process.env.REACT_APP_EVENTS_ROOT || '';
 
 const createSocketMiddleware = () => {
-  const socket = io({
+  const socket = io('/caller', {
     path: eventsRoot,
     transports: ['websocket'],
   });
@@ -14,17 +14,25 @@ const createSocketMiddleware = () => {
   });
 
   return ({ dispatch }) => {
-    socket.on('test', dispatch);
+    socket.on(FSA, dispatch);
 
     return next => action => {
       const socketAction = action[RSSA];
 
       if (socketAction) {
-        const { event, message, ack } = socketAction;
-        return socket.emit(event, message, ack);
+        const { ack, event, message, optimistic } = socketAction;
+        message.meta = {
+          ...message.meta,
+          sid: socket.id,
+        };
+        socket.emit(event || FSA, message, ack);
+        if (optimistic) {
+          next(message);
+        }
+        return;
       }
 
-      return next(action);
+      next(action);
     };
   };
 };

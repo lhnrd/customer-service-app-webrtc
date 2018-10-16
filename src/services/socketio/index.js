@@ -6,7 +6,7 @@ export default (eventsRoot = '', events = f => f) => (composed = {}) => {
     path: eventsRoot,
     serveClient: false
   })
-  io.on('connection', events)
+  events(io)
   composed.io = server ? io.attach(server) : io
   return composed
 }

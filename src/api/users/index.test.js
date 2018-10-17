@@ -1,6 +1,6 @@
 import request from 'supertest'
 import { apiRoot, masterKey } from '../../config'
-import { createUser, createUsers } from '../../../test/fixtures'
+import { createUser, createUsers } from '../../services/db/fixtures'
 import { truncate } from '../../../test/helpers'
 import express from '../../services/express'
 import { signSync } from '../../services/jwt'

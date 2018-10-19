@@ -2,7 +2,7 @@ import request from 'supertest'
 import { apiRoot } from '../../config'
 import { verify } from '../../services/jwt'
 import express from '../../services/express'
-import { createUser } from '../../../test/fixtures'
+import { createUser } from '../../services/db/fixtures'
 import { truncate } from '../../../test/helpers'
 import routes from '.'
 

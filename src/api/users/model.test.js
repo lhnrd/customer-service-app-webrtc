@@ -1,5 +1,5 @@
 import User from './model'
-import { createUser } from '../../../test/fixtures'
+import { createUser } from '../../services/db/fixtures'
 import { truncate } from '../../../test/helpers'
 
 let data = {

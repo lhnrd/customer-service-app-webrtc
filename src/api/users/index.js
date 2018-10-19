@@ -9,6 +9,7 @@ const router = new Router()
  * @apiName RetrieveUsers
  * @apiGroup User
  * @apiPermission admin
+ * @apiParam {String} access_token User access_token.
  * @apiSuccess {Object[]} users List of users.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
@@ -20,7 +21,7 @@ router.get('/',
  * @api {get} /users/me Retrieve current user
  * @apiName RetrieveCurrentUser
  * @apiGroup User
- * @apiPermission user
+ * @apiPermission admin, user
  * @apiParam {String} access_token User access_token.
  * @apiSuccess {Object} user User's data.
  */
@@ -85,7 +86,7 @@ router.patch('/:id',
  * @apiError 404 User not found.
  */
 router.put('/:id/password',
-  token({ required: true, roles: ['user'] }),
+  token({ required: true }),
   updatePassword)
 
 /**

@@ -12,6 +12,12 @@ const factory = express(apiRoot, routes)
 beforeEach(truncate('users'))
 
 describe('[endpoint] /users', () => {
+  let app
+
+  beforeEach(() => {
+    app = factory().app
+  })
+
   describe('admin', () => {
     describe('DELETE', () => {
       test('/:id 200', async () => {
@@ -27,7 +33,7 @@ describe('[endpoint] /users', () => {
           }
         ])
         const adminSession = signSync(admin.id)
-        const { status, body } = await request(factory().app)
+        const { status, body } = await request(app)
           .delete(`${apiRoot}/${user.id}`)
           .send({ access_token: adminSession })
 
@@ -38,7 +44,7 @@ describe('[endpoint] /users', () => {
       test('/:id 404', async () => {
         const admin = await createUser({ role: 'admin' })
         const adminSession = signSync(admin.id)
-        const { status } = await request(factory().app)
+        const { status } = await request(app)
           .delete(apiRoot + '/5a21b571-c60f-4d1c-abfd-23e06900cb2e')
           .send({ access_token: adminSession })
 
@@ -58,7 +64,7 @@ describe('[endpoint] /users', () => {
           {}
         ])
         const adminSession = signSync(admin.id)
-        const { body, headers, status } = await request(factory().app)
+        const { body, headers, status } = await request(app)
           .get(apiRoot)
           .query({ access_token: adminSession })
 
@@ -82,7 +88,7 @@ describe('[endpoint] /users', () => {
         const user = await createUser({ name: 'othername' })
         const adminSession = signSync(admin.id)
 
-        const { status, body } = await request(factory().app)
+        const { status, body } = await request(app)
           .patch(`${apiRoot}/${user.id}`)
           .send({ access_token: adminSession, name: 'test' })
 
@@ -94,7 +100,7 @@ describe('[endpoint] /users', () => {
       test('/:id 404', async () => {
         const admin = await createUser({ role: 'admin' })
         const adminSession = signSync(admin.id)
-        const { status } = await request(factory().app)
+        const { status } = await request(app)
           .patch(apiRoot + '/5a21b571-c60f-4d1c-abfd-23e06900cb2e')
           .send({ access_token: adminSession, name: 'test' })
 
@@ -107,7 +113,7 @@ describe('[endpoint] /users', () => {
     describe('POST', () => {
       test('/ 201', async () => {
         const email = 'user@email.com'
-        const { status, body } = await request(factory().app)
+        const { status, body } = await request(app)
           .post(apiRoot)
           .send({ access_token: masterKey, email, password: '123456', role: 'user' })
 
@@ -119,7 +125,7 @@ describe('[endpoint] /users', () => {
       test('/ 409 - duplicated email', async () => {
         const email = 'duplicated@email.com'
         await createUser({ email })
-        const { status, body } = await request(factory().app)
+        const { status, body } = await request(app)
           .post(apiRoot)
           .send({ access_token: masterKey, email, password: '123456' })
         expect(status).toBe(409)
@@ -128,7 +134,7 @@ describe('[endpoint] /users', () => {
       })
 
       test('/ 400 - invalid email', async () => {
-        const { status, body } = await request(factory().app)
+        const { status, body } = await request(app)
           .post(apiRoot)
           .send({ access_token: masterKey, email: 'invalid', password: '123456' })
         expect(status).toBe(400)
@@ -137,7 +143,7 @@ describe('[endpoint] /users', () => {
       })
 
       test('/ 400 - missing email', async () => {
-        const { status, body } = await request(factory().app)
+        const { status, body } = await request(app)
           .post(apiRoot)
           .send({ access_token: masterKey, password: '123456' })
         expect(status).toBe(400)
@@ -146,7 +152,7 @@ describe('[endpoint] /users', () => {
       })
 
       test('/ 400 - invalid password', async () => {
-        const { status, body } = await request(factory().app)
+        const { status, body } = await request(app)
           .post(apiRoot)
           .send({ access_token: masterKey, email: 'd@d.com', password: '123' })
         expect(status).toBe(400)
@@ -155,7 +161,7 @@ describe('[endpoint] /users', () => {
       })
 
       test('/ 400 - missing password', async () => {
-        const { status, body } = await request(factory().app)
+        const { status, body } = await request(app)
           .post(apiRoot)
           .send({ access_token: masterKey, email: 'd@d.com' })
         expect(status).toBe(400)
@@ -164,7 +170,7 @@ describe('[endpoint] /users', () => {
       })
 
       test('/ 400 - invalid role', async () => {
-        const { status, body } = await request(factory().app)
+        const { status, body } = await request(app)
           .post(apiRoot)
           .send({ access_token: masterKey, email: 'd@d.com', password: '123456', role: 'invalid' })
         expect(status).toBe(400)
@@ -178,7 +184,7 @@ describe('[endpoint] /users', () => {
     describe('DELETE', () => {
       test('/:id 401', async () => {
         const user = await createUser()
-        const { status } = await request(factory().app)
+        const { status } = await request(app)
           .delete(`${apiRoot}/${user.id}`)
         expect(status).toBe(401)
       })
@@ -186,20 +192,20 @@ describe('[endpoint] /users', () => {
 
     describe('GET', () => {
       test('/ 401', async () => {
-        const { status } = await request(factory().app)
+        const { status } = await request(app)
           .get(apiRoot)
         expect(status).toBe(401)
       })
 
       test('/me 401', async () => {
-        const { status } = await request(factory().app)
+        const { status } = await request(app)
           .get(apiRoot + '/me')
         expect(status).toBe(401)
       })
 
       test('/:id 200', async () => {
         const user = await createUser()
-        const response = await request(factory().app)
+        const response = await request(app)
           .get(`${apiRoot}/${user.id}`)
         const { body, headers, status } = response
 
@@ -211,7 +217,7 @@ describe('[endpoint] /users', () => {
       })
 
       test('/:id 404', async () => {
-        const { status } = await request(factory().app)
+        const { status } = await request(app)
           .get(apiRoot + '/5a21b571-c60f-4d1c-abfd-23e06900cb2e')
         expect(status).toBe(404)
       })
@@ -219,7 +225,7 @@ describe('[endpoint] /users', () => {
 
     describe('PATCH', () => {
       test('/me 401', async () => {
-        const { status } = await request(factory().app)
+        const { status } = await request(app)
           .patch(apiRoot + '/me')
           .send({ name: 'test' })
         expect(status).toBe(401)
@@ -227,7 +233,7 @@ describe('[endpoint] /users', () => {
 
       test('/:id 401', async () => {
         const user = await createUser()
-        const { status } = await request(factory().app)
+        const { status } = await request(app)
           .patch(`${apiRoot}/${user.id}`)
           .send({ name: 'test' })
         expect(status).toBe(401)
@@ -240,7 +246,7 @@ describe('[endpoint] /users', () => {
       test('/:id 401', async () => {
         const user = await createUser()
         const userSession = signSync(user.id)
-        const { status } = await request(factory().app)
+        const { status } = await request(app)
           .delete(`${apiRoot}/${user.id}`)
           .send({ access_token: userSession })
         expect(status).toBe(401)
@@ -251,7 +257,7 @@ describe('[endpoint] /users', () => {
       test('/ 401', async () => {
         const user = await createUser()
         const userSession = signSync(user.id)
-        const { status } = await request(factory().app)
+        const { status } = await request(app)
           .get(apiRoot)
           .query({ access_token: userSession })
         expect(status).toBe(401)
@@ -260,7 +266,7 @@ describe('[endpoint] /users', () => {
       test('/me 200', async () => {
         const user = await createUser()
         const userSession = signSync(user.id)
-        const { status, body } = await request(factory().app)
+        const { status, body } = await request(app)
           .get(apiRoot + '/me')
           .query({ access_token: userSession })
         expect(status).toBe(200)
@@ -277,7 +283,7 @@ describe('[endpoint] /users', () => {
         expect(user.email).not.toBe('test@test.com')
         expect(user.name).not.toBe('test')
 
-        const { status, body } = await request(factory().app)
+        const { status, body } = await request(app)
           .patch(apiRoot + '/me')
           .send({ access_token: userSession, email: 'test@test.com', name: 'test' })
 
@@ -294,7 +300,7 @@ describe('[endpoint] /users', () => {
         expect(user.email).not.toBe('test@test.com')
         expect(user.name).not.toBe('test')
 
-        const { status, body } = await request(factory().app)
+        const { status, body } = await request(app)
           .patch(`${apiRoot}/${user.id}`)
           .send({ access_token: userSession, email: 'test@test.com', name: 'test' })
         expect(status).toBe(200)
@@ -308,7 +314,7 @@ describe('[endpoint] /users', () => {
         const userTwo = await createUser({ name: 'usertwo' })
         const userOneSession = signSync(userOne.id)
 
-        const { status } = await request(factory().app)
+        const { status } = await request(app)
           .patch(`${apiRoot}/${userTwo.id}`)
           .send({ access_token: userOneSession, name: 'test' })
         expect(status).toBe(401)
@@ -326,7 +332,7 @@ describe('[endpoint] /users', () => {
           password: '123456'
         })
         const userSession = signSync(user.id)
-        const { status, body } = await request(factory().app)
+        const { status, body } = await request(app)
           .put(`${apiRoot}/${user.id}/password`)
           .send({ access_token: userSession, password: '654321' })
 
@@ -343,7 +349,7 @@ describe('[endpoint] /users', () => {
           password: '123456'
         })
         const userSession = signSync(user.id)
-        const { status, body } = await request(factory().app)
+        const { status, body } = await request(app)
           .put(`${apiRoot}/${user.id}/password`)
           .send({ access_token: userSession, password: '321' })
 
@@ -359,7 +365,7 @@ describe('[endpoint] /users', () => {
           email,
           password
         })
-        const { status } = await request(factory().app)
+        const { status } = await request(app)
           .put(`${apiRoot}/${user.id}/password`)
           .auth(email, password)
           .send({ password: '654321' })
@@ -371,7 +377,7 @@ describe('[endpoint] /users', () => {
         const userOne = await createUser()
         const userTwo = await createUser()
         const userOneSession = signSync(userOne.id)
-        const { status } = await request(factory().app)
+        const { status } = await request(app)
           .put(`${apiRoot}/${userTwo.id}/password`)
           .send({ access_token: userOneSession, password: '654321' })
 

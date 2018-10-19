@@ -15,11 +15,7 @@ export const createUserDry = ({
   role
 })
 
-export const createUsersDry = data => {
-  const users = data.map(user => createUserDry(user))
-  console.log(users)
-  return users
-}
+export const createUsersDry = data => data.map(user => createUserDry(user))
 
 export const createUser = data =>
   User.query().insert(createUserDry(data)).returning('*')

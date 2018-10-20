@@ -1,5 +1,9 @@
 import faker from 'faker'
+import addMinutes from 'date-fns/fp/addMinutes'
 import ServiceCall from '../../../api/service-calls/model'
+
+const add30Minutes = addMinutes(30)
+const startedAtDate = new Date()
 
 export const createServiceCallDry = ({
   id = faker.random.uuid(),
@@ -7,8 +11,10 @@ export const createServiceCallDry = ({
   callRating = faker.random.number(6),
   serviceRating = faker.random.number(6),
   isSolved = faker.random.boolean(),
-  startedAt = (new Date()),
-  endedAt = (new Date())
+  startedAt = startedAtDate,
+  endedAt = add30Minutes(startedAtDate),
+  customerId,
+  userId
 } = {}) => ({
   id,
   description,
@@ -16,7 +22,9 @@ export const createServiceCallDry = ({
   serviceRating,
   isSolved,
   startedAt,
-  endedAt
+  endedAt,
+  customerId,
+  userId
 })
 
 export const createServiceCallsDry = data =>

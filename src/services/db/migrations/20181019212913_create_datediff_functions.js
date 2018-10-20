@@ -1,12 +1,12 @@
 exports.up = function (knex, Promise) {
   return knex.raw(`
-    CREATE OR REPLACE FUNCTION date_diff(units VARCHAR(30), start_t TIME, end_t TIME)
+    CREATE OR REPLACE FUNCTION date_diff(units VARCHAR(30), start_t TIMESTAMP WITH TIME ZONE, end_t TIMESTAMP WITH TIME ZONE)
       RETURNS INT AS $$
     DECLARE
       diff_interval INTERVAL;
       diff INT = 0;
     BEGIN
-      -- Minus operator for TIME returns interval 'HH:MI:SS'
+      -- Minus operator returns interval 'DDD days HH:MI:SS'
       diff_interval = end_t - start_t;
 
       diff = DATE_PART('hour', diff_interval);

@@ -1,5 +1,6 @@
 import JoiBase from 'joi'
 import JoiDate from 'joi-date-extensions'
+import path from 'path'
 
 import BaseModel from '../../common/base-model'
 
@@ -29,8 +30,25 @@ class ServiceCall extends BaseModel {
     return ServiceCallSchema
   }
 
-  static get tableName () {
-    return 'service_calls'
+  static tableName = 'service_calls'
+
+  static relationMappings = {
+    customer: {
+      modelClass: path.resolve(__dirname, '../customers/model'),
+      relation: BaseModel.BelongsToOneRelation,
+      join: {
+        from: 'service_calls.customerId',
+        to: 'customers.id'
+      }
+    },
+    user: {
+      modelClass: path.resolve(__dirname, '../users/model'),
+      relation: BaseModel.BelongsToOneRelation,
+      join: {
+        from: 'service_calls.userId',
+        to: 'users.id'
+      }
+    }
   }
 }
 

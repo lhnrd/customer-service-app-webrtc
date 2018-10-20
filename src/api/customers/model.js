@@ -1,4 +1,5 @@
 import Joi from 'joi'
+import path from 'path'
 
 import BaseModel from '../../common/base-model'
 
@@ -13,8 +14,17 @@ class Customer extends BaseModel {
     return CustomerSchema
   }
 
-  static get tableName () {
-    return 'customers'
+  static tableName = 'customers'
+
+  static relationMappings = {
+    serviceCalls: {
+      modelClass: path.resolve(__dirname, '../service-calls/model'),
+      relation: BaseModel.HasManyRelation,
+      join: {
+        from: 'customers.id',
+        to: 'service_calls.customerId'
+      }
+    }
   }
 }
 

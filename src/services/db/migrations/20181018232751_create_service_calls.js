@@ -10,8 +10,12 @@ exports.up = function (knex, Promise) {
     table.integer('duration').comment('Service duration in milliseconds')
     table.timestamps()
 
-    table.uuid('customer_id').references('customers.id')
-    table.uuid('user_id').references('users.id')
+    table.uuid('customer_id')
+      .references('customers.id')
+      .onDelete('SET NULL')
+    table.uuid('user_id')
+      .references('users.id')
+      .onDelete('SET NULL')
     table.index('user_id')
   })
 }

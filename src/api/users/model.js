@@ -1,6 +1,7 @@
 import Joi from 'joi'
 import { compose } from 'objection'
 import password from 'objection-password'
+import path from 'path'
 
 import BaseModel from '../../common/base-model'
 
@@ -21,8 +22,17 @@ class User extends enhance(BaseModel) {
     return UserSchema
   }
 
-  static get tableName () {
-    return 'users'
+  static tableName = 'users'
+
+  static relationMappings = {
+    serviceCalls: {
+      modelClass: path.resolve(__dirname, '../service-calls/model'),
+      relation: BaseModel.HasManyRelation,
+      join: {
+        from: 'users.id',
+        to: 'service_calls.userId'
+      }
+    }
   }
 }
 

@@ -2,25 +2,18 @@ import React from 'react';
 import { Button } from 'antd';
 import { connect } from 'react-redux';
 
-import { RSSA } from 'src/constants';
+import * as actions from 'src/actions/socket';
+
 /* eslint-disable */
-const HomePage = ({ test }) => (
+const HomePage = ({ connectSocket }) => (
   <div>
-    <Button onClick={test}>Test</Button>
+    <Button onClick={connectSocket}>Test</Button>
   </div>
 );
 
 export default connect(
   null,
   {
-    test: () => ({
-      [RSSA]: {
-        event: 'testme',
-        message: {
-          a: 1,
-          lucas: true,
-        },
-      },
-    }),
+    connectSocket: actions.connectSocket,
   }
 )(HomePage);

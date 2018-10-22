@@ -1,5 +1,5 @@
 import { Server } from 'http'
-import fp from 'lodash/fp'
+import pipe from 'lodash/fp/pipe'
 import { env, port, ip, apiRoot, eventsRoot } from './config'
 import express from './services/express'
 import { init } from './services/db'
@@ -10,7 +10,7 @@ import events from './events'
 init()
 
 // socket.io setup must be the last
-const { app, io, server } = fp.pipe(
+const { app, io, server } = pipe(
   express(apiRoot, api),
   socketio(eventsRoot, events)
 )({

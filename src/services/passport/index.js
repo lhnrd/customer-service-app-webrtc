@@ -83,6 +83,10 @@ passport.use('token', new JwtStrategy({
   User
     .query()
     .findById(id)
-    .then(user => done(null, user))
-    .catch(done)
+    .asCallback((err, user) => {
+      if (err) {
+        return done(err)
+      }
+      return done(null, user)
+    })
 ))

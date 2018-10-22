@@ -4,7 +4,6 @@ import createConstants from 'src/utils/create-constants';
 
 const createAuthConstants = createConstants('@@auth/');
 
-// authenticate
 export const types = createAuthConstants(
   // authenticate
   'AUTH_REQUEST',

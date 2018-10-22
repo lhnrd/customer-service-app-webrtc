@@ -60,7 +60,7 @@ const createSocketMiddleware = () => {
           socket.disconnect();
           break;
         case SOCKET_CONN_ERROR:
-          socket.open();
+          socket.connect();
           break;
         case SOCKET_CLOSE_SUCCESS:
           break;

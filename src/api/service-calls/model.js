@@ -30,6 +30,7 @@ class ServiceCall extends BaseModel {
     return ServiceCallSchema
   }
 
+  static enableEvents = true
   static tableName = 'service_calls'
 
   static relationMappings = {

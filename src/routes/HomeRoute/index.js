@@ -1,9 +1,8 @@
-import { compose, lifecycle } from 'recompose';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
 
 import withDataLoading from 'src/hocs/with-data-loading';
 import HomePage from 'src/pages/HomePage';
-import * as socketActions from 'src/actions/socket';
 import * as serviceCallsActions from 'src/actions/service-call';
 
 const getServiceCalls = state => Object.values(state.serviceCalls);
@@ -24,10 +23,5 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  lifecycle({
-    componentDidMount() {
-      this.props.connectSocket();
-    },
-  }),
   withDataLoading(loadData)
 )(HomePage);

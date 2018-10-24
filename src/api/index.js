@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import auth from './auth'
+import customers from './customers'
 import serviceCalls from './service-calls'
 import users from './users'
 
@@ -32,6 +33,7 @@ const router = new Router()
  * @apiParam {String[]} [fields] Fields to be returned.
  */
 router.use('/auth', auth)
+router.use('/customers', customers)
 router.use('/service-calls', serviceCalls)
 router.use('/users', users)
 

@@ -1,11 +1,17 @@
-import { FSA } from '../constants'
+import { FSA } from '../../constants'
+import ServiceCall from './model'
 
-const broadcastFSA = ({ io, socket }) => message => {
-  io.of('/manager').emit(FSA, message)
-  socket.broadcast.emit(FSA, message)
-}
-
-export default io => socket => {
-  console.log('caller connected')
-  socket.on(FSA, broadcastFSA({ io, socket }))
+export default io => {
+  ServiceCall.events.on('POST', ({ data }) => {
+    io.of('/manager').emit(FSA, {
+      type: '@@service-call/CREATE_ENTITY_SUCCESS',
+      payload: data
+    })
+  })
+  ServiceCall.events.on('PUT', ({ data }) => {
+    io.of('/manager').emit(FSA, {
+      type: '@@service-call/UPDATE_ENTITY_SUCCESS',
+      payload: data
+    })
+  })
 }

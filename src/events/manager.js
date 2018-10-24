@@ -1,5 +1,4 @@
 import { FSA } from '../constants'
-import ServiceCall from '../api/service-calls/model'
 
 const broadcastFSA = ({ io, socket }) => message => {
   io.of('/caller').emit(FSA, message)
@@ -7,17 +6,7 @@ const broadcastFSA = ({ io, socket }) => message => {
 }
 
 export default io => socket => {
-  ServiceCall.events.on('POST', ({ data }) => {
-    socket.broadcast.emit(FSA, {
-      type: '@@service-call/POST',
-      payload: data
-    })
+  socket.on('@@rtc/SEND_SIGNAL', (message, ack) => {
+    console.log(message, ack)
   })
-  ServiceCall.events.on('PUT', ({ data }) => {
-    socket.broadcast.emit(FSA, {
-      type: '@@service-call/PUT',
-      payload: data
-    })
-  })
-  socket.on(FSA, broadcastFSA({ io, socket }))
 }

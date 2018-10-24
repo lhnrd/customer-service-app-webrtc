@@ -17,10 +17,10 @@ export const initialState = {
 
 const reducer = immerReducer(
   {
-    [READ_ENTITIES_SUCCESS]: (serviceCalls, payload) => {
+    [READ_ENTITIES_SUCCESS]: (state, payload) => {
       const { entities, result } = normalize(payload, schemas.serviceCallList);
-      serviceCalls.byId = entities.serviceCalls;
-      serviceCalls.allIds = result;
+      state.byId = entities.state;
+      state.allIds = result;
     },
   },
   initialState

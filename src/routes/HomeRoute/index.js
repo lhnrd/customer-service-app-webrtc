@@ -5,18 +5,17 @@ import withDataLoading from 'src/hocs/with-data-loading';
 import HomePage from 'src/pages/HomePage';
 import * as serviceCallsActions from 'src/actions/service-call';
 
-const getServiceCalls = state => Object.values(state.serviceCalls);
+const getServiceCalls = state => state.serviceCalls;
 
 const mapStateToProps = state => ({
   serviceCalls: getServiceCalls(state),
 });
 
 const mapDispatchToProps = {
-  connectSocket: socketActions.connectSocket,
-  loadServiceCalls: serviceCallsActions.loadServiceCalls,
+  readServiceCalls: serviceCallsActions.readServiceCalls,
 };
 
-const loadData = props => props.loadServiceCalls();
+const loadData = props => props.readServiceCalls();
 
 export default compose(
   connect(

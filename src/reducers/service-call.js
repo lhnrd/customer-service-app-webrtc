@@ -1,8 +1,8 @@
-import produce from 'immer';
 import { normalize, schema } from 'normalizr';
 import { types } from 'src/actions/service-call';
+import immerReducer from 'src/utils/immer-reducer';
 
-const { GET_SUCCESS } = types;
+const { READ_ENTITIES_SUCCESS } = types;
 
 export const STATE_KEY = 'serviceCalls';
 
@@ -10,20 +10,20 @@ export const schemas = {};
 schemas.serviceCall = new schema.Entity('serviceCalls');
 schemas.serviceCallList = new schema.Array(schemas.serviceCall);
 
-export const state = {};
+export const initialState = {
+  allIds: [],
+  byId: {},
+};
 
-const reducer = produce((draft, { type, payload }) => {
-  switch (type) {
-    case GET_SUCCESS: {
-      const {
-        entities: { serviceCalls },
-      } = normalize(payload, schemas.serviceCallList);
-      Object.entries(serviceCalls).forEach(([id, serviceCall]) => {
-        draft[id] = serviceCall;
-      });
-    }
-    // no default
-  }
-}, state);
+const reducer = immerReducer(
+  {
+    [READ_ENTITIES_SUCCESS]: (serviceCalls, payload) => {
+      const { entities, result } = normalize(payload, schemas.serviceCallList);
+      serviceCalls.byId = entities.serviceCalls;
+      serviceCalls.allIds = result;
+    },
+  },
+  initialState
+);
 
 export default reducer;

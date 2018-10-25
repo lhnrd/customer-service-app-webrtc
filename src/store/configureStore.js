@@ -3,18 +3,26 @@ import { apiMiddleware } from 'redux-api-middleware';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import { devToolsEnhancer } from 'redux-devtools-extension'; // eslint-disable-line
+import io from 'socket.io-client';
 
-import authApiMiddleware from 'src/utils/auth-api-middleware';
 import createSocketMiddleware from 'src/utils/socket-middleware';
+import rtcMiddleware from 'src/utils/rtc-middleware';
 import rootReducer from 'src/reducers';
 
+const eventsRoot = process.env.REACT_APP_EVENTS_ROOT || '';
+
 const configureStore = preloadedState => {
-  const socketMiddleware = createSocketMiddleware();
+  const socket = io('/caller', {
+    path: eventsRoot,
+    transports: ['websocket'],
+    autoConnect: false,
+  });
+  const socketMiddleware = createSocketMiddleware(socket);
   const middlewares = [
-    thunk,
-    authApiMiddleware,
+    thunk.withExtraArgument({ socket }),
     apiMiddleware,
     socketMiddleware,
+    rtcMiddleware,
     logger,
   ];
   const middlewareEnhancer = applyMiddleware(...middlewares);

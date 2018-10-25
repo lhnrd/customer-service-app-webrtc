@@ -1,59 +1,58 @@
-import Peer from 'simple-peer';
 import { RSSA } from 'src/constants';
 import createConstants from 'src/utils/create-constants';
 
 const createRtcConstants = createConstants('@@rtc/');
 
 export const types = createRtcConstants(
+  'PEER_CONNECT',
   'PEER_SET',
-  'SIGNAL_SEND',
+  'STREAM_SET',
   'SIGNAL_RECEIVE',
-  'STREAM_SET'
+  'SIGNAL_SEND'
 );
 
-const { PEER_SET, SIGNAL_SEND, SIGNAL_RECEIVE, STREAM_SET } = types;
+const {
+  PEER_CONNECT,
+  PEER_SET,
+  STREAM_SET,
+  SIGNAL_RECEIVE,
+  SIGNAL_SEND,
+} = types;
 
-export const sendSignal = ({ id, signal }) => ({
+export const sendSignal = ({ room, signal }) => ({
   [RSSA]: {
+    event: SIGNAL_SEND,
     message: {
-      type: SIGNAL_SEND,
-      payload: signal,
-      meta: {
-        namespace: '/caller',
-        room: id,
-      },
+      type: SIGNAL_RECEIVE,
+      payload: { signal },
+      meta: { namespace: '/caller', room },
     },
+  },
+});
+
+export const connectPeer = ({ room, stream }) => ({
+  [RSSA]: {
+    event: PEER_CONNECT,
+    message: {
+      type: PEER_CONNECT,
+      payload: { stream },
+      meta: { namespace: '/caller', room },
+    },
+    optimistic: true,
   },
 });
 
 export const receiveSignal = signal => ({
   type: SIGNAL_RECEIVE,
-  payload: signal,
+  payload: { signal },
 });
 
 export const setPeer = peer => ({
   type: PEER_SET,
-  payload: peer,
+  payload: { peer },
 });
 
 export const setStream = stream => ({
   type: STREAM_SET,
-  payload: stream,
+  payload: { stream },
 });
-
-export const peerConnectTo = ({ id, stream }) => (
-  dispatch,
-  getState,
-  { socket }
-) => {
-  const peer = new Peer({ stream });
-
-  peer.on('signal', signal => dispatch(sendSignal({ id, signal })));
-
-  socket.on(`${id}`, signal => {
-    peer.signal(signal);
-  });
-
-  peer.on('connect', () => dispatch(setPeer(peer)));
-  peer.on('stream', peerStream => dispatch(setStream(peerStream)));
-};

@@ -10,14 +10,14 @@ class VideoRoute extends Component {
   componentDidMount() {
     const {
       match: { params },
-      peerConnectTo,
+      connectPeer,
     } = this.props;
 
     navigator.getUserMedia(
       { video: true, audio: true },
       stream => {
-        peerConnectTo({
-          id: params.id,
+        connectPeer({
+          room: params.id,
           stream,
         });
       },
@@ -26,20 +26,25 @@ class VideoRoute extends Component {
   }
 
   render() {
-    return <VideoPage />;
+    return <VideoPage {...this.props} />;
   }
 }
 
 VideoRoute.propTypes = {
   match: matchPropType.isRequired,
-  peerConnectTo: PropTypes.func.isRequired,
+  connectPeer: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = state => ({
+  localStream: state.rtc.localStream,
+  remoteStream: state.rtc.remoteStream,
+});
+
 const mapDispatchToProps = {
-  peerConnectTo: rtcActions.peerConnectTo,
+  connectPeer: rtcActions.connectPeer,
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(VideoRoute);

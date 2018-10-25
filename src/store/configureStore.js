@@ -7,6 +7,7 @@ import io from 'socket.io-client';
 
 import authApiMiddleware from 'src/utils/auth-api-middleware';
 import createSocketMiddleware from 'src/utils/socket-middleware';
+import rtcMiddleware from 'src/utils/rtc-middleware';
 import rootReducer from 'src/reducers';
 
 const eventsRoot = process.env.REACT_APP_EVENTS_ROOT || '';
@@ -23,6 +24,7 @@ const configureStore = preloadedState => {
     authApiMiddleware,
     apiMiddleware,
     socketMiddleware,
+    rtcMiddleware,
     logger,
   ];
   const middlewareEnhancer = applyMiddleware(...middlewares);

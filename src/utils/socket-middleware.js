@@ -23,7 +23,7 @@ const createSocketMiddleware = socket => ({ dispatch }) => {
       };
       socket.emit(event || FSA, message, ack);
       if (optimistic) {
-        next(message);
+        dispatch(message);
       }
       return;
     }

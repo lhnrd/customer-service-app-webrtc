@@ -1,23 +1,32 @@
-import { FSA } from '../constants'
-import ServiceCall from '../api/service-calls/model'
+import d from 'debug'
+import { FSA, rtcEvents } from '../constants'
 
-const broadcastFSA = ({ io, socket }) => message => {
-  io.of('/caller').emit(FSA, message)
-  socket.broadcast.emit(FSA, message)
-}
+const debug = d('socket:manager')
+const {
+  PEER_CONNECT,
+  SIGNAL_SEND
+} = rtcEvents
 
 export default io => socket => {
-  ServiceCall.events.on('POST', ({ data }) => {
-    socket.broadcast.emit(FSA, {
-      type: '@@service-call/POST',
-      payload: data
+  debug('socket connected')
+
+  socket.on(PEER_CONNECT, (message, ack) => {
+    debug(`${PEER_CONNECT} received`)
+    const { meta: { room } } = message
+
+    socket.join(room, () => {
+      debug(`joined ${room}`)
     })
   })
-  ServiceCall.events.on('PUT', ({ data }) => {
-    socket.broadcast.emit(FSA, {
-      type: '@@service-call/PUT',
-      payload: data
-    })
+
+  socket.on(SIGNAL_SEND, message => {
+    debug(`${SIGNAL_SEND} received`)
+    const {
+      meta: { namespace, room }
+    } = message
+
+    debug(`emitting ${FSA} to ${room} and ${namespace}`)
+
+    io.of(namespace).to(room).emit(FSA, message)
   })
-  socket.on(FSA, broadcastFSA({ io, socket }))
 }

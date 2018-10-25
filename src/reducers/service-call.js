@@ -19,7 +19,7 @@ const reducer = immerReducer(
   {
     [READ_ENTITIES_SUCCESS]: (state, payload) => {
       const { entities, result } = normalize(payload, schemas.serviceCallList);
-      state.byId = entities.state;
+      state.byId = entities.serviceCalls;
       state.allIds = result;
     },
   },

@@ -1,15 +1,11 @@
-import { actions } from 'src/constants';
+import { combineReducers } from 'redux';
 
-const { START_CALL } = actions;
+import rtc, { STATE_KEY as RTC_STATE_KEY } from './rtc';
+import socket, { STATE_KEY as SOCKET_STATE_KEY } from './socket';
 
-const rootReducer = (state = {}, action) => {
-  switch (action.type) {
-    case [START_CALL]:
-      console.log('started call');
-      return state;
-    default:
-      return state;
-  }
-};
+const rootReducer = combineReducers({
+  [RTC_STATE_KEY]: rtc,
+  [SOCKET_STATE_KEY]: socket,
+});
 
 export default rootReducer;

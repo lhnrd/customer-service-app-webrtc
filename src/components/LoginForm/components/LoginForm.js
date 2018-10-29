@@ -1,15 +1,14 @@
 import React from 'react';
-import { Form, Icon, Input, Button } from 'antd';
 import { Formik } from 'formik';
+import PropTypes from 'prop-types';
 import { compose, withHandlers } from 'recompose';
 import { connect } from 'react-redux';
+import { Button, Box, FormField, TextInput, Text } from 'grommet';
 
 import * as actions from 'src/actions/auth';
-import { validateForm, validationProps } from '../utils/validation';
+import { validateForm } from '../utils/validation';
 
-const FormItem = Form.Item;
-
-const LoginForm = ({ onSubmit }) => (
+const LoginForm = ({ authMessage, onSubmit }) => (
   <Formik
     initialValues={{ email: '', password: '' }}
     validate={validateForm}
@@ -25,51 +24,72 @@ const LoginForm = ({ onSubmit }) => (
       isSubmitting,
       isValid,
     }) => (
-      <Form onSubmit={handleSubmit}>
-        <FormItem
-          colon={false}
+      <form onSubmit={handleSubmit}>
+        <FormField
+          htmlFor="email-input"
           label="E-mail"
-          {...validationProps('email', errors, touched)}
+          placeholder="email@email.com"
+          error={touched.email && errors.email}
         >
-          <Input
-            prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+          <TextInput
+            id="email-input"
             name="email"
             type="email"
             placeholder="email@email.com"
             onBlur={handleBlur}
             onChange={handleChange}
             value={values.email}
+            required
           />
-        </FormItem>
-        <FormItem
-          colon={false}
+        </FormField>
+        <FormField
+          htmlFor="password-input"
           label="Password"
-          {...validationProps('password', errors, touched)}
+          error={touched.password && errors.password}
         >
-          <Input
-            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+          <TextInput
+            id="password-input"
             name="password"
             type="password"
-            placeholder="*******"
+            placeholder="******"
             onBlur={handleBlur}
             onChange={handleChange}
             value={values.password}
+            required
           />
-        </FormItem>
-        <FormItem>
-          <Button
-            disabled={!isValid || isSubmitting}
-            type="primary"
-            htmlType="submit"
-            block
-          >
-            Log in
-          </Button>
-        </FormItem>
-      </Form>
+        </FormField>
+        {authMessage && (
+          <Box margin={{ left: 'small', right: 'small' }}>
+            <Text color="status-error">{authMessage}</Text>
+          </Box>
+        )}
+        <Button
+          color="neutral-3"
+          disabled={!isValid || isSubmitting}
+          label="Log in"
+          type="submit"
+          margin={{ top: 'medium' }}
+          fill
+          primary
+        />
+      </form>
     )}
   </Formik>
 );
+
+LoginForm.propTypes = {
+  authMessage: PropTypes.string,
+  onSubmit: PropTypes.func,
+};
+
+LoginForm.defaultProps = {
+  authMessage: null,
+  onSubmit: null,
+};
+
+const mapStateToProps = state => ({
+  authMessage: state.auth.errorMessage,
+});
 
 const mapDispatchToProps = {
   authenticate: actions.authenticate,
@@ -77,7 +97,7 @@ const mapDispatchToProps = {
 
 export default compose(
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   ),
   withHandlers({

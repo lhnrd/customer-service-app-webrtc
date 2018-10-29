@@ -1,14 +1,13 @@
-import { compose } from 'recompose';
+import { compose, withState } from 'recompose';
 import { connect } from 'react-redux';
 
 import withDataLoading from 'src/hocs/with-data-loading';
-import HomePage from 'src/pages/HomePage';
+import AppPage from 'src/pages/AppPage';
 import * as serviceCallsActions from 'src/actions/service-call';
-
-const getServiceCalls = state => state.serviceCalls;
+import { serviceCallsSelector } from 'src/selectors/service-call';
 
 const mapStateToProps = state => ({
-  serviceCalls: getServiceCalls(state),
+  serviceCalls: serviceCallsSelector(state),
 });
 
 const mapDispatchToProps = {
@@ -22,5 +21,6 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  withDataLoading(loadData)
-)(HomePage);
+  withDataLoading(loadData),
+  withState('serviceCallRoom', 'setServiceCallRoom', null)
+)(AppPage);

@@ -1,4 +1,4 @@
 export const APP_PATH = '';
-export const HOME_PATH = `${APP_PATH}/`;
-export const LOGIN_PATH = '/login';
-export const VIDEO_PATH = '/video/:id';
+export const DASHBOARD_PATH = `${APP_PATH}/dashboard`;
+export const LOGIN_PATH = `${APP_PATH}/login`;
+export const SERVICE_CALL_PATH = `${APP_PATH}/:serviceCallId`;

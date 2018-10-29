@@ -15,7 +15,8 @@ const configureStore = preloadedState => {
   const socket = io('/caller', {
     path: eventsRoot,
     transports: ['websocket'],
-    autoConnect: false,
+    autoConnect: true,
+    reconnection: false,
   });
   const socketMiddleware = createSocketMiddleware(socket);
   const middlewares = [

@@ -12,6 +12,17 @@ const {
 const createSocketMiddleware = socket => ({ dispatch }) => {
   socket.on(FSA, dispatch);
 
+  socket.on('connect', () =>
+    dispatch({
+      type: SOCKET_OPEN_SUCCESS,
+      payload: { sid: socket.id },
+    })
+  );
+  socket.on('disconnect', () => dispatch({ type: SOCKET_CLOSE_SUCCESS }));
+  socket.on('error', error =>
+    dispatch({ type: SOCKET_CONN_ERROR, payload: { error } })
+  );
+
   return next => action => {
     const socketAction = action[RSSA];
 
@@ -31,24 +42,12 @@ const createSocketMiddleware = socket => ({ dispatch }) => {
     switch (action.type) {
       case SOCKET_OPEN_REQUEST:
         socket.connect();
-
-        socket.on('connect', () =>
-          dispatch({
-            type: SOCKET_OPEN_SUCCESS,
-            payload: { sid: socket.id },
-          })
-        );
-        socket.on('disconnect', () => dispatch({ type: SOCKET_CLOSE_SUCCESS }));
-        socket.on('error', error =>
-          dispatch({ type: SOCKET_CONN_ERROR, payload: { error } })
-        );
-
         break;
       case SOCKET_CLOSE_REQUEST:
         socket.disconnect();
         break;
       case SOCKET_CONN_ERROR:
-        socket.connect();
+        // socket.connect();
         break;
       default:
         break;

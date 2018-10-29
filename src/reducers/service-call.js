@@ -1,29 +1,42 @@
-import { normalize, schema } from 'normalizr';
+import produce from 'immer';
 import { types } from 'src/actions/service-call';
-import immerReducer from 'src/utils/immer-reducer';
 
-const { READ_ENTITIES_SUCCESS } = types;
+const { ENTITY_CREATE, ENTITY_DELETE, ENTITIES_READ_SUCCESS } = types;
 
 export const STATE_KEY = 'serviceCalls';
-
-export const schemas = {};
-schemas.serviceCall = new schema.Entity('serviceCalls');
-schemas.serviceCallList = new schema.Array(schemas.serviceCall);
 
 export const initialState = {
   allIds: [],
   byId: {},
 };
 
-const reducer = immerReducer(
-  {
-    [READ_ENTITIES_SUCCESS]: (state, payload) => {
-      const { entities, result } = normalize(payload, schemas.serviceCallList);
-      state.byId = entities.serviceCalls;
-      state.allIds = result;
-    },
-  },
-  initialState
-);
+export default produce((draft, { type, payload }) => {
+  switch (type) {
+    case ENTITY_CREATE: {
+      const { entity } = payload;
+      const { entityId } = entity;
 
-export default reducer;
+      draft.allIds.unshift(entityId);
+      draft.byId[entityId] = entity;
+      break;
+    }
+    case ENTITY_DELETE: {
+      const { entity } = payload;
+      const { entityId } = entity;
+
+      draft.allIds.splice(
+        draft.allIds.findIndex(svcId => svcId === entityId),
+        1
+      );
+      delete draft.byId[entityId];
+      break;
+    }
+    case ENTITIES_READ_SUCCESS: {
+      const { entities, result } = payload;
+      draft.allIds = result;
+      draft.byId = { ...entities.serviceCalls };
+      break;
+    }
+    // no default
+  }
+}, initialState);

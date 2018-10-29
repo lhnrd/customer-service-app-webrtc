@@ -27,7 +27,7 @@ const reducer = produce((draft, { type, payload }) => {
     case AUTH_REQUEST:
       draft.isAuthenticated = false;
       draft.isFetching = true;
-      return;
+      break;
     case AUTH_SUCCESS:
       if (els.set(AUTH_TOKEN_KEY, payload.token)) {
         draft.errorMessage = null;
@@ -35,16 +35,19 @@ const reducer = produce((draft, { type, payload }) => {
         draft.isFetching = false;
         draft.user = payload.user;
       }
-      return;
+      break;
     case AUTH_FAILURE:
-    case CHECK_AUTH_FAILURE:
       draft.errorMessage = payload.message;
       draft.isAuthenticated = false;
       draft.isFetching = false;
-      return;
+      break;
+    case CHECK_AUTH_FAILURE:
+      draft.isAuthenticated = false;
+      draft.isFetching = false;
+      break;
     case CHECK_AUTH_REQUEST:
       draft.isFetching = true;
-      return;
+      break;
     case CHECK_AUTH_SUCCESS:
       draft.errorMessage = null;
       draft.isFetching = false;

@@ -1,20 +1,26 @@
 import React from 'react';
-import { Layout } from 'antd';
-import { Box } from '@rebass/grid';
+import { Box, Grommet } from 'grommet';
 
-import FullScreenContainer from 'src/styles/FullScreenContainer';
 import LoginForm from 'src/components/LoginForm';
 
 const LoginPage = () => (
-  <Layout>
-    <Layout.Content>
-      <FullScreenContainer alignItems="center" justifyContent="center">
-        <Box width={1 / 5}>
-          <LoginForm />
-        </Box>
-      </FullScreenContainer>
-    </Layout.Content>
-  </Layout>
+  <Grommet full>
+    <Box
+      align="center"
+      alignContent="center"
+      alignSelf="center"
+      justify="center"
+      fill
+    >
+      <Box
+        width="medium"
+        border={{ color: 'neutral-1', size: 'large' }}
+        pad="large"
+      >
+        <LoginForm />
+      </Box>
+    </Box>
+  </Grommet>
 );
 
 export default LoginPage;

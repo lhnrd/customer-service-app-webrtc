@@ -39,8 +39,7 @@
     "simple-peer": "9.0.0",
     "socket.io-client": "^2.1.1",
     "styled-components": "^4.0.2",
-    "styled-loaders-react": "^1.0.0",
-    "webrtc-adapter": "^6.4.4"
+    "styled-loaders-react": "^1.0.0"
   },
   "devDependencies": {
     "babel-plugin-import": "^1.9.1",

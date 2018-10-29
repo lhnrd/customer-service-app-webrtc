@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 
-import { HOME_PATH } from 'src/routes/paths';
-import { selectIsAuthenticated } from 'src/selectors';
+import { DASHBOARD_PATH } from 'src/routes/paths';
+import { isAuthenticatedSelector } from 'src/selectors/auth';
 
 const RouteUnauthenticated = ({
   component: Component,
@@ -12,7 +12,7 @@ const RouteUnauthenticated = ({
   ...rest
 }) => {
   if (isAuthenticated) {
-    return <Redirect to={HOME_PATH} {...rest} />;
+    return <Redirect to={DASHBOARD_PATH} {...rest} />;
   }
 
   return <Route {...rest} component={Component} />;
@@ -24,7 +24,7 @@ RouteUnauthenticated.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: selectIsAuthenticated(state),
+  isAuthenticated: isAuthenticatedSelector(state),
 });
 
 export default connect(mapStateToProps)(RouteUnauthenticated);

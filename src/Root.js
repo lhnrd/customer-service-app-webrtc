@@ -1,37 +1,35 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { ThemeProvider } from 'styled-components';
+import { grommet } from 'grommet/themes';
+import { Grommet } from 'grommet';
 
 import AuthProvider from 'src/containers/AuthProvider';
 import configureStore from 'src/store/configureStore';
 import Global from 'src/styles/Global';
-import { HOME_PATH, LOGIN_PATH } from 'src/routes/paths';
-import HomeRoute from 'src/routes/HomeRoute';
+import { APP_PATH, LOGIN_PATH } from 'src/routes/paths';
+import AppRoute from 'src/routes/AppRoute';
 import LoginPage from 'src/pages/LoginPage';
 import RouteAuthenticated from 'src/containers/RouteAuthenticated';
 import RouteUnauthenticated from 'src/containers/RouteUnauthenticated';
 
 const store = configureStore();
-const theme = {
-  main: 'mediumseagreen',
-};
 
 const Root = () => (
   <Provider store={store}>
-    <ThemeProvider theme={theme}>
+    <Grommet theme={grommet}>
       <AuthProvider>
         <Router>
           <>
             <Global />
             <Switch>
               <RouteUnauthenticated path={LOGIN_PATH} component={LoginPage} />
-              <RouteAuthenticated path={HOME_PATH} component={HomeRoute} />
+              <RouteAuthenticated path={APP_PATH} component={AppRoute} />
             </Switch>
           </>
         </Router>
       </AuthProvider>
-    </ThemeProvider>
+    </Grommet>
   </Provider>
 );
 

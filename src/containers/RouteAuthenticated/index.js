@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 
 import { LOGIN_PATH } from 'src/routes/paths';
-import { selectIsAuthenticated } from 'src/selectors';
+import { isAuthenticatedSelector } from 'src/selectors/auth';
 
 const RouteAuthenticated = ({
   component: Component,
@@ -24,7 +24,7 @@ RouteAuthenticated.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: selectIsAuthenticated(state),
+  isAuthenticated: isAuthenticatedSelector(state),
 });
 
 export default connect(mapStateToProps)(RouteAuthenticated);

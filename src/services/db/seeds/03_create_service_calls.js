@@ -18,6 +18,18 @@ const adminServiceCalls = createServiceCallsDry([
   {
     userId: USER_ID.admin,
     customerId: CUSTOMER_ID.customerThree
+  },
+  {
+    userId: USER_ID.admin,
+    customerId: CUSTOMER_ID.customerOne
+  },
+  {
+    userId: USER_ID.admin,
+    customerId: CUSTOMER_ID.customerTwo
+  },
+  {
+    userId: USER_ID.admin,
+    customerId: CUSTOMER_ID.customerThree
   }
 ])
 const userOneServicesCalls = createServiceCallsDry([
@@ -35,12 +47,6 @@ const userOneServicesCalls = createServiceCallsDry([
   }
 ])
 const serviceCalls = createServiceCallsDry([
-  {
-    customerId: CUSTOMER_ID.customerOne
-  },
-  {
-    customerId: CUSTOMER_ID.customerTwo
-  },
   {
     customerId: CUSTOMER_ID.customerThree
   }

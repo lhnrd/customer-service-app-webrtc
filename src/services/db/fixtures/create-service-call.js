@@ -7,8 +7,8 @@ const startedAtDate = new Date()
 export const createServiceCallDry = ({
   id = faker.random.uuid(),
   description = faker.lorem.sentences(3),
-  callRating = faker.random.number(5),
-  serviceRating = faker.random.number(5),
+  callRating = faker.random.number(4) + 1,
+  serviceRating = faker.random.number(4) + 1,
   isSolved = faker.random.boolean(),
   startedAt = startedAtDate,
   endedAt = addMinutes(faker.random.number(120), startedAtDate),
@@ -17,9 +17,15 @@ export const createServiceCallDry = ({
 } = {}) => ({
   id,
   description,
-  callRating: (userId && endedAt) ? callRating : 0,
-  serviceRating: (userId && endedAt) ? serviceRating : 0,
-  isSolved: (userId && endedAt) ? isSolved : false,
+  ...(faker.random.number(3) > 1 ? {
+    callRating: (userId && endedAt) ? callRating : 0,
+    serviceRating: (userId && endedAt) ? serviceRating : 0,
+    isSolved: (userId && endedAt) ? isSolved : undefined
+  } : {
+    callRating: 0,
+    serviceRating: 0,
+    isSolved: undefined
+  }),
   startedAt: userId ? startedAt : undefined,
   endedAt: userId ? endedAt : undefined,
   customerId,

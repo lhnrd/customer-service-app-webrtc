@@ -17,13 +17,15 @@
   },
   "dependencies": {
     "@rebass/grid": "^6.0.0-4",
-    "antd-mobile": "^2.2.5",
     "formik": "^1.3.0",
+    "grommet": "^2.0.0-rc",
+    "grommet-icons": "^3.1.0",
     "immer": "^1.7.2",
     "local-storage": "^1.4.2",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-rating": "^1.4.1",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "react-router-prop-types": "^1.0.4",
@@ -36,7 +38,9 @@
     "redux-thunk": "^2.3.0",
     "simple-peer": "9.0.0",
     "socket.io-client": "^2.1.1",
-    "styled-components": "^4.0.0-beta.9"
+    "styled-components": "^4.0.2",
+    "styled-loaders-react": "^1.0.0",
+    "webrtc-adapter": "^6.4.4"
   },
   "devDependencies": {
     "babel-plugin-import": "^1.9.1",
@@ -64,7 +68,7 @@
     "stylelint": "^9.6.0",
     "stylelint-config-recommended": "^2.1.0",
     "stylelint-config-styled-components": "^0.1.1",
-    "stylelint-processor-styled-components": "^1.4.0"
+    "stylelint-processor-styled-components": "^1.5.0"
   },
   "browserslist": [
     ">0.2%",

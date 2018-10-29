@@ -1,6 +1,6 @@
 import createConstants from 'src/utils/create-constants';
 
-export const types = createConstants('@socket')(
+export const types = createConstants('@socket/')(
   'SOCKET_OPEN_REQUEST',
   'SOCKET_OPEN_SUCCESS',
   'SOCKET_CLOSE_REQUEST',

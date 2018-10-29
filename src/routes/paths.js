@@ -1,3 +1,1 @@
-export const APP_PATH = '';
-export const HOME_PATH = `${APP_PATH}/`;
-export const VIDEO_PATH = '/video/:id';
+export const APP_PATH = '/:customerId'; // eslint-disable-line

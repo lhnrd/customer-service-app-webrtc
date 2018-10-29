@@ -1,30 +1,28 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { ThemeProvider } from 'styled-components';
+import { grommet } from 'grommet/themes';
+import { Grommet } from 'grommet';
 
-import Global from 'src/styles/Global';
-import HomeRoute from 'src/routes/HomeRoute';
-import { HOME_PATH } from 'src/routes/paths';
+import AppRoute from 'src/routes/AppRoute';
+import { APP_PATH } from 'src/routes/paths';
 import configureStore from 'src/store/configureStore';
+import Global from 'src/styles/Global';
 
 const store = configureStore();
-const theme = {
-  main: 'mediumseagreen',
-};
 
 const Root = () => (
   <Provider store={store}>
-    <ThemeProvider theme={theme}>
+    <Grommet theme={grommet}>
       <Router>
         <>
           <Global />
           <Switch>
-            <Route path={HOME_PATH} component={HomeRoute} />
+            <Route path={APP_PATH} component={AppRoute} />
           </Switch>
         </>
       </Router>
-    </ThemeProvider>
+    </Grommet>
   </Provider>
 );
 

@@ -7,7 +7,7 @@ import { Button, Box, Text } from 'grommet';
 import { Star } from 'grommet-icons';
 import Rating from 'react-rating';
 import { format } from 'date-fns';
-import ms from 'ms';
+import ms from 'pretty-ms';
 import { connect } from 'react-redux';
 
 import NavLinkBox from 'src/styles/NavLinkBox';

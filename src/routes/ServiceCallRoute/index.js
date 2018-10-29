@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { compose, branch, renderComponent, withProps } from 'recompose';
 import { format } from 'date-fns';
-import ms from 'ms';
+import ms from 'pretty-ms';
 
 import LoadingPage from 'src/pages/LoadingPage';
 import ServiceCallPage from 'src/pages/ServiceCallPage';

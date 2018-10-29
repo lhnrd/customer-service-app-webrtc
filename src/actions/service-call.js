@@ -1,30 +1,43 @@
-import { RSAA } from 'redux-api-middleware';
+import { getJSON, RSAA } from 'redux-api-middleware';
+import { normalize } from 'normalizr';
 
 import createConstants from 'src/utils/create-constants';
+import * as schema from 'src/schemas';
 
 const createServiceCallConstants = createConstants('@@service-call/');
 
 export const types = createServiceCallConstants(
+  'ENTITY_CREATE',
+  'ENTITY_DELETE',
   // READ ENTITIES
-  'READ_ENTITIES_REQUEST',
-  'READ_ENTITIES_SUCCESS',
-  'READ_ENTITIES_FAILURE'
+  'ENTITIES_READ_REQUEST',
+  'ENTITIES_READ_SUCCESS',
+  'ENTITIES_READ_FAILURE'
 );
 
 const {
-  READ_ENTITIES_REQUEST,
-  READ_ENTITIES_SUCCESS,
-  READ_ENTITIES_FAILURE,
+  ENTITIES_READ_REQUEST,
+  ENTITIES_READ_SUCCESS,
+  ENTITIES_READ_FAILURE,
 } = types;
 
 export const readServiceCalls = () => ({
   [RSAA]: {
-    endpoint: '/service-calls',
+    endpoint: `/service-calls?filter=${JSON.stringify({
+      eager: {
+        customer: true,
+      },
+      order: 'startedAt desc, updatedAt desc',
+    })}`,
     method: 'GET',
     types: [
-      READ_ENTITIES_REQUEST,
-      READ_ENTITIES_SUCCESS,
-      READ_ENTITIES_FAILURE,
+      ENTITIES_READ_REQUEST,
+      {
+        type: ENTITIES_READ_SUCCESS,
+        payload: (action, state, res) =>
+          getJSON(res).then(json => normalize(json, [schema.serviceCall])),
+      },
+      ENTITIES_READ_FAILURE,
     ],
   },
 });

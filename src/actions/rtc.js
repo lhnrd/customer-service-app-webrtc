@@ -1,7 +1,8 @@
-import { RSSA } from 'src/constants';
+import { types as socketTypes } from 'src/actions/socket';
 import createConstants from 'src/utils/create-constants';
 
 const createRtcConstants = createConstants('@@rtc/');
+const { RSSA } = socketTypes;
 
 export const types = createRtcConstants(
   'PEER_CONNECT',

@@ -7,7 +7,9 @@ export const types = createSocketConstants(
   'SOCKET_OPEN_SUCCESS',
   'SOCKET_CLOSE_REQUEST',
   'SOCKET_CLOSE_SUCCESS',
-  'SOCKET_CONN_ERROR'
+  'SOCKET_CONN_ERROR',
+  'FSA',
+  'RSSA'
 );
 
 const { SOCKET_OPEN_REQUEST } = types;

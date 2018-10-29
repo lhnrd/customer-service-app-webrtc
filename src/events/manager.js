@@ -29,4 +29,12 @@ export default io => socket => {
 
     io.of(namespace).to(room).emit(FSA, message)
   })
+
+  socket.on('disconnect', reason => {
+    debug(`socket disconnected ${reason}`)
+  })
+
+  socket.on('error', error => {
+    debug(`socket error ${error}`)
+  })
 }

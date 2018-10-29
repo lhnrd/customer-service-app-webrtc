@@ -1,9 +1,5 @@
 const { injectBabelPlugin } = require('react-app-rewired');
 
-const importAntd = [
-  'import',
-  { libraryName: 'antd', libraryDirectory: 'es', style: 'css' },
-];
 const moduleResolver = [
   'module-resolver',
   {
@@ -18,7 +14,7 @@ const styledComponents = [
     fileName: false,
   },
 ];
-const babelPlugins = [importAntd, moduleResolver, styledComponents];
+const babelPlugins = [moduleResolver, styledComponents];
 
 module.exports = function override(config) {
   return babelPlugins.reduce(

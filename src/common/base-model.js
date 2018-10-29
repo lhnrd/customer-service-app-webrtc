@@ -6,7 +6,7 @@ import { timestampPlugin as timestamps } from 'objection-timestamps'
 import JoiValidator from './joi-validator'
 import events from '../utils/objection-events'
 
-const enhance = compose(guid(), timestamps(), visibility, events)
+const enhance = compose(guid(), events, timestamps(), visibility)
 const validator = new JoiValidator()
 
 class BaseModel extends enhance(Model) {

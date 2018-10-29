@@ -8,7 +8,7 @@ const Joi = JoiBase.extend(JoiDate)
 
 export const ServiceCallSchema = Joi.object({
   id: Joi.string().uuid().optional(),
-  description: Joi.string(),
+  description: Joi.string().optional(),
 
   // call timeline
   startedAt: Joi.date().optional(),

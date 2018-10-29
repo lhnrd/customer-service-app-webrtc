@@ -4,7 +4,7 @@ exports.up = function (knex, Promise) {
     table.string('description')
     table.integer('call_rating').defaultTo(0)
     table.integer('service_rating').defaultTo(0)
-    table.boolean('is_solved').defaultTo(false)
+    table.boolean('is_solved')
     table.timestamp('started_at')
     table.timestamp('ended_at')
     table.integer('duration').comment('Service duration in milliseconds')

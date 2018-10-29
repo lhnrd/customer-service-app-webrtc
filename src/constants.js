@@ -9,3 +9,14 @@ export const rtcEvents = createConstants('@@rtc/')(
   'SIGNAL_RECEIVE',
   'SIGNAL_SEND'
 )
+
+export const serviceCallEvents = createConstants('@@service-call/')(
+  'ENTITY_CREATE',
+  'ENTITY_DELETE',
+  'ENTITY_UPDATE'
+)
+
+export const socketEvents = createConstants()(
+  'disconnect',
+  'error'
+)

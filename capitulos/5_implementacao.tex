@@ -168,8 +168,155 @@ A biblioteca tem uma arquitetura baseada no desenvolvimento orientado a componen
 
 Escolhida para o desenvolvimento da interface devido a sua popularidade na comunidade, pela sua facilidade de uso, apesar de um alta curva de aprendizado e o aspecto funcional e declarativo.
 
-\section{Desenvolvimento Back-end}
+\section{Desenvolvimento do sistema}
 
-\section{Desenvolvimento Front-end}
+Com base na modelagem de classes e nos casos de uso levantados foi criado uma arquitetura para suprir as necessidades do sistema e do problema apresentado no trabalho.
+O projeto foi desenvolvido utilizando Git para controle de versão junto do sistema Github para subir o código em um repositório online. 
 
-\section{Testes}
+\begin{figure}[ht!]
+	\centering
+    \includegraphics[scale=0.35]{figures/zenhub-tickets.jpg} 
+	\caption{Organização do projeto dentro do Github/ZenHub}
+	\label{fig:zenhub_tickets}
+\end{figure}
+
+Foi utilizada a extensão ZenHub (\autoref{fig:zenhub_tickets}) para organização e gerenciamento de tickets com uma metodologia similar ao Kanban. O sistema é constituido de quatro projetos, \textit{SAC API}, \textit{SAC Manager}, \textit{SAC Caller} e \textit{SAC Plugin}e abaixo será explicado sua arquitetura.
+
+\clearpage
+\subsection{Arquitetura}
+
+Pensada de maneira a fornecer ao usuário do sistema de atendimento uma facilidade ao se conectar com seu próprio cliente. A decisão em dividir o projeto em múltiplas partes veio da necessidade do \textit{sac-caller} ser usado em dispositivos móveis, ou seja, era necessário uma aplicação pequena que não consumisse muita internet ao baixá-la.
+
+\begin{figure}[ht!]
+	\centering
+    \includegraphics[scale=0.6]{figures/system-architecture.png} 
+	\caption{Arquitetura dos projetos do sistema}
+	\label{fig:system_architecture}
+\end{figure}
+
+Observamos na \autoref{fig:system_architecture} como os projetos estão organizados. O projeto \textit{SAC API} é um servidor com uma API REST que possui suporte a conexão \textit{web sockets} para a facilidade de troca de mensagens. Já SAC \textit{Manager}, \textit{Caller} e \textit{Plugin} são os três constituídos somente de HTML, Javascript e CSS, sendo os dois primeiros aplicações feitas em React.
+
+Na figura \autoref{fig:webrtc_conn_flow} está explicado como é o fluxo para realizar uma conexão entre cliente e usuário:
+
+\begin{figure}[ht!]
+	\centering
+    \includegraphics[scale=0.6]{figures/webrtc-conn-flow.png}
+	\caption{Fluxograma conexão WebRTC entre cliente e usuário}
+	\label{fig:webrtc_conn_flow}
+\end{figure}
+
+\clearpage
+\subsection{Projeto SAC \textit{Manager}}
+
+Aplicação feita com o propósito de ajudar os atendentes do sistema de atendimento a receberem chamadas de clientes, controlarem seus tickets, checarem se os problemas foram resolvidos entre outras funcionalidades.
+
+No momento da inicialização é feita uma requisição ao servidor para coletar todos os dados do atendente junto das chamadas que ainda não foram atendidas, assim o mesmo pode responde-las mesmo não estando autenticado no momento da ligação.
+
+O projeto é composto de quatro telas e a lista de chamadas:
+
+\subsubsection{Login}
+
+Tela de login básica (\autoref{fig:manager_login}) onde o atendente se autentica para receber as ligações que ele já realizou e para realizar outras e ter sua conta anexadas a ela. Não existe uma tela de cadastro pois o administrador do sistema deve fazer o cadastro de atendentes manualmente.
+
+\begin{figure}[ht!]
+	\centering
+    \includegraphics[scale=0.3]{figures/screens/manager-login.jpg}
+	\caption{Tela de login do atendente}
+	\label{fig:manager_login}
+\end{figure}
+
+\subsubsection{Vídeoconferência}
+
+Principal tela do sistema onde o atendente consegue realizar o chamada de serviço e tentar resolver o problema do cliente. É nessa tela que a conexão \textit{peer-to-peer} é realizada. O vídeo é transmitido através de \textit{streams} disponibilizadas pela a API WebRTC do navegador.
+
+Observamos na primeira tela (\autoref{fig:manager_video_overlay}) que o atendente está esperando a conexão com o cliente e o software oferece a possibilidade de desligar a ligação e como também ter uma visão da sua própria câmera.
+
+\begin{figure}[ht!]
+	\centering
+    \includegraphics[scale=0.25]{figures/screens/manager-video-overlay.jpg}
+	\caption{Atendente esperando conexão com cliente}
+	\label{fig:manager_video_overlay}
+\end{figure}
+
+E na segunda tela (\autoref{fig:manager_video_chat}) vemos o cliente já conectado ao atendente.
+
+\begin{figure}[ht!]
+	\centering
+    \includegraphics[scale=0.25]{figures/screens/manager-video-chat.jpg}
+	\caption{Cliente aparecendo para o atendente}
+	\label{fig:manager_video_chat}
+\end{figure}
+
+\subsubsection{Estatísticas do atendente}
+
+Segunda tela mais importante, reúne informações de todas as ligações que o atendente fez, sintetizadas em um único lugar através de indicadores como média (\textit{avg}) e comparação entre ligações resolvidas e não resolvidas. 
+
+\begin{figure}[ht!]
+	\centering
+    \includegraphics[scale=0.3]{figures/screens/manager-dashboard.jpg}
+	\caption{Estatísticas do atendente}
+	\label{fig:manager_dashboard}
+\end{figure}
+
+
+Vemos em \autoref{fig:manager_dashboard} que existem dados especificados como \textit{N/A} (sem resposta). Isso é devido ao usuário ter a possibilidade de fechar a janela do navegador sem ter respondido o questionário de \textit{feedback} no final da ligação.
+
+\clearpage
+\subsubsection{Estatísticas da ligação}
+
+Tela utilizada para saber em mais detalhes informações sobre a chamada de serviço realizada. Nela temos outras informações como descrição da chamada que é fornecida pelo cliente e dados do mesmo, para que contatos futuros possam ser realizados se o problema não for resolvido.
+
+\begin{figure}[ht!]
+	\centering
+    \includegraphics[scale=0.3]{figures/screens/manager-service-call.jpg}
+	\caption{Estatísticas da ligação}
+	\label{fig:manager_service_call}
+\end{figure}
+
+Observamos na imagem (\autoref{fig:manager_service_call}) avaliações da chamada (\textit{call}) e do serviço (\textit{service}). Como também informações de data e duração da mesma.
+
+\clearpage
+\subsubsection{Lista de chamadas}
+
+Outra parte crucial do projeto, onde temos um visão rápida sobre as chamadas que foram realizadas e também sobre cliente que estão ligando no momento. 
+
+\begin{figure}[ht!]
+	\centering
+    \includegraphics[scale=0.4]{figures/screens/manager-service-call-list.jpg}
+	\caption{Lista de chamadas de serviço}
+	\label{fig:manager_service_call_list}
+\end{figure}
+
+A lista (\autoref{fig:manager_service_call_list}) é atualizada em tempo real através de \textit{web sockets}, ou seja, não é necessário atualizar a página e fazer uma requisição ao servidor. Ao mesmo tempo quando uma chamada é atendida por outro usuário a mesma desaparece da lista. Cada atendente somente consegue visualizar suas próprias chamadas.
+
+\clearpage
+\subsection{Projeto SAC \textit{Caller}}
+
+Projeto com o propósito de ser simples e pequeno para que não seja necessário o cliente baixar uma aplicação grande através de sua conexão 3G (caso Wi-Fi não esteja disponível). Essa parte do sistema conta com duas telas, a principal que realiza a conexão em vídeo e a outra, um formulário de qualidade para o cliente responder sobre a chamada.
+
+O projeto funciona tanto em telas pequenas como grandes, porém como é muito parecido com o \textit{manager} a tela foi reduzida para demonstrar a sua capacidade.
+
+\subsubsection{Vídeoconferência}
+
+Tela mais importante do projeto onde o cliente faz a requisição de chamada para o sistema, e a requisição aparece na lista de chamadas (\autoref{fig:manager_service_call_list}) dos atendentes. O funcionamento é muito similar à videoconferência do \textit{manager}.
+
+\begin{figure}[ht!]
+	\centering
+    \includegraphics[scale=0.35]{figures/screens/caller-video-chat-overlay.jpg}
+	\caption{Cliente em vídeoconferência}
+	\label{fig:caller_video_chat_overlay}
+\end{figure}
+
+\subsubsection{Formulário de qualidade}
+
+Vemos na figura (\autoref{fig:caller_feedback_form}) o formulário fornecido ao cliente após o fim da ligação.
+
+\begin{figure}[ht!]
+	\centering
+    \includegraphics[scale=0.35]{figures/screens/caller-feedback-form.jpg}
+	\caption{Formulário de qualidade fornecido ao cliente}
+	\label{fig:caller_feedback_form}
+\end{figure}
+
+A funcionalidade do formulário tem como objetivo reunir informações tanto da qualidade do atendente como da qualidade da chamada em si (áudio, vídeo). E por fim se o problema do cliente foi resolvido ou não. Em futuras atualizações do software esse tipo de dado por ser utilizado para a empresa ter conhecimento sobre o próprio produto e sobre pontos de dor dos usuários.
+

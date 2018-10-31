@@ -3,7 +3,8 @@
 % ----------------------------------------------------------
 \chapter[Projeto de implementação]{Projeto de implementação}\label{chap:projeto}
 
-%FRANK: Adicionar parágrafo introdutório, descrevendo de forma sucinta o conteúdo do capítulo. 
+Nesse capítulo apresentamos a estrutura, arquitetura e funcionalidades do projeto abordado realizado no trabalho. 
+Em primeiro momento foi feita uma análise dos requisitos necessários, para que então pudéssemos organizar todas as funcionalidades dentro do protótipo da aplicação e por fim projetar a arquitetura do \textit{software} e a modelagem do banco de dados.
 
 \section{Análise de Requisitos}
 
@@ -11,17 +12,7 @@ Dois tipos de requisitos foram levantados para a implementação do projeto: Req
 
 Para definição dos RF, foram analisados programas no estado da arte das duas categorias abordadas (videoconferência e atendimento ao consumidor) e coletadas funcionalidades consideradas importantes. Os RNF foram definidos a partir de estudos de aplicações Web modernas, com exceção do WebRTC que foi definido desde o principio. Requisitos funcionais serão apresentados com um diagrama de casos de uso, sendo cada caso um requisito. 
 
-Os RF levantados são representados como casos de uso na \autoref{fig:usecases}.
-
-\begin{figure}[ht!]
-	\centering
-    \includegraphics[scale=0.4]{figures/usecases.png} 
-	\caption{Requisitos Funcionais do sistema representados por casos de uso}
-	\label{fig:usecases}
-\end{figure}
-%FRANK: Aumentar tamanho da figura para que fique legível
-
-Os RNF levantados são os seguintes:
+Os RNF levantados são os seguintes (os itens 11, 12 e 13 foram baseados no trabalho \cite[Sec.~4.3.1]{webrtcquality}):
 \begin{itemize}
 	\item RNF 01: Utilizar a linguagem JavaScript.
     \item RNF 02: Arquitetura REST para API.
@@ -33,32 +24,46 @@ Os RNF levantados são os seguintes:
     \item RNF 08: Utilizar PostgreSQL como gerenciador de banco de dados.
     \item RNF 09: Suporte a dispositivos móveis.
     \item RNF 10: Utilização de WebRTC para videoconferência.
-%FRANK: Adicionar requisitos sobre qualidade da comunicação (limite de retardo, qualidade de áudio e vídeo, poucas quedas de conexão)
+    \item RNF 11: A taxa de transmissão deve estar acima de 1.0 Mbps.
+    \item RNF 12: Porcentagem de perda de pacotes não deve ultrapassar o máximo de 10\%.
+    \item RNF 13: Limite da latência da comunicação de 1000 milisegundos.
 \end{itemize}
 
+Os RF levantados são representados como casos de uso na \autoref{fig:usecases}.
+
+\begin{figure}[ht!]
+	\centering
+    \includegraphics[scale=0.9]{figures/usecases.png} 
+	\caption{Requisitos Funcionais do sistema representados por casos de uso}
+	\label{fig:usecases}
+\end{figure}
+
+\newpage
 \section{Protótipos de tela}
 
 \subsection{Login}
 
-A tela inicial da aplicação é a de login, constituída de um pequeno formulário de autenticação e um logo no canto esquerdo. 
+A tela inicial da aplicação é a de login (ver \autoref{fig:login_prototype}), constituída de um pequeno formulário de autenticação e um logo no canto esquerdo. 
+
+\begin{figure}[ht!]
+	\centering
+    \includegraphics[scale=0.4]{figures/prototypes/login.png} 
+	\caption{Tela de login}
+	\label{fig:login_prototype}
+\end{figure}
 
 Como nenhum cliente necessita de cadastro para realizar chamadas, a tela está disponível somente para os atendentes entrarem no gerenciamento de tickets. 
 
- Ao inserir os dados corretamente o atendente é redirecionado para a lista de tickets.
- %(ref lista de tickets) 
- Caso contrário, um erro é mostrado no formulário.
+ Ao inserir os dados corretamente o atendente é redirecionado para a lista de tickets (ver \ref{subsec:ticket_management}). Caso contrário, um erro é mostrado no formulário.
 
-% Protótipo da telas de login
+\subsection{Gerenciamento de tickets}\label{subsec:ticket_management}
 
-\subsection{Gerenciamento de tickets}
-
-A tela de Gerenciamento de Tickets é a primeira tela do sistema de atendimento. Podemos observar na figura 
-%(protótipo!!!) 
+A tela de Gerenciamento de Tickets é a primeira tela do sistema de atendimento. Podemos observar nas figuras \ref{fig:support_statistics}, \ref{fig:ticket_statistics} e \ref{fig:call_statistics} 
 que a interface é constituída de uma barra lateral na esquerda e o conteúdo principal à direita. 
 
 O conteúdo a ser mostrado na direita dependerá do contexto da aplicação e de onde o usuário está no momento. Temos três situações diferentes que podem acontecer.
 
-De inicio, temos a tela de estatísticas de tickets relacionados ao atendente (\autoref{fig:support_statistics}). Essa tela aparece no conteúdo principal quando o usuário não tem nenhum ticket selecionado. Ela reune informações de todos os atendimentos feitos pelo usuário autenticado, como:
+De inicio, temos a tela de estatísticas de tickets relacionados ao atendente (\autoref{fig:support_statistics}). Essa tela aparece no conteúdo principal quando o usuário não tem nenhum ticket selecionado. Ela reúne informações de todos os atendimentos feitos pelo usuário autenticado, como:
 
 \begin{itemize}
   \item Número total de chamadas;
@@ -70,13 +75,15 @@ De inicio, temos a tela de estatísticas de tickets relacionados ao atendente (\
 
 \begin{figure}[ht!]
 	\centering
-    \includegraphics[scale=0.4]{figures/support-statistics.png} 
+    \includegraphics[scale=0.4]{figures/prototypes/support-statistics.png} 
 	\caption{Tela de estatísticas do atendente}
 	\label{fig:support_statistics}
 \end{figure}
 
-A segunda tela (\autoref{fig:ticket_statistics}) diz respeito a informações sobre um ticket específico que está selecionado. É importante frisar que o item selecionado é de um atendimento já encerrado, pois o conteúdo é diferente. 
-%FRANK: explicar quais são essas diferenças
+A segunda tela (\autoref{fig:ticket_statistics}) diz respeito a informações sobre um ticket específico que está selecionado.
+
+É importante frisar que o item selecionado é de um atendimento já encerrado, pois o conteúdo é diferente e mostra informações adicionais sobre  a qualidade da chamada e algumas vezes até a opinião do cliente atendido, se fornecida pelo mesmo.
+
 Os dados presentes são:
 
 \begin{itemize}
@@ -89,9 +96,9 @@ Os dados presentes são:
   \item O problema foi resolvido.
 \end{itemize}
 
-\begin{figure}[ht!]
+\begin{figure}[!htb]
 	\centering
-    \includegraphics[scale=0.4]{figures/ticket-statistics.png} 
+    \includegraphics[scale=0.4]{figures/prototypes/ticket-statistics.png} 
 	\caption{Tela de estatísticas de um ticket encerrado}
 	\label{fig:ticket_statistics}
 \end{figure}
@@ -99,7 +106,7 @@ Os dados presentes são:
 Por último, temos na \autoref{fig:call_statistics} a tela que mostra o conteúdo de um ticket em aberto, ou seja, que o cliente está requisitando a chamada no momento. Nessa tela são exibidas as seguintes informações:
 
 \begin{itemize}
-	\item Nome do cliente e email do cliente;
+	\item Nome e-mail do cliente;
     \item Empresa, se existir;
     \item Descrição do problema; e
     \item Botões de aceitar ou recusar chamada.
@@ -107,7 +114,7 @@ Por último, temos na \autoref{fig:call_statistics} a tela que mostra o conteúd
 
 \begin{figure}[ht!]
 	\centering
-    \includegraphics[scale=0.4]{figures/call-statistics.png} 
+    \includegraphics[scale=0.4]{figures/prototypes/call-statistics.png} 
 	\caption{Tela de estatísticas de uma requisição de chamado}
 	\label{fig:call_statistics}
 \end{figure}
@@ -135,7 +142,7 @@ Consiste na interface que compreende a funcionalidade principal do sistema de at
 
 \begin{figure}[ht!]
 	\centering
-    \includegraphics[scale=0.2]{figures/videoconference.png} 
+    \includegraphics[scale=0.2]{figures/prototypes/videoconference.png} 
 	\caption{Videoconferência entre atendente e cliente}
 	\label{fig:videoconference}
 \end{figure}
@@ -180,7 +187,7 @@ Com a conexão estabelecida entre os dois pontos, a aplicação renderiza automa
 
 \section{Modelagem do banco de dados}
 
-O diagrama de entidades representado na figura \ref{fig:database_model}, contém três modelagens que representam a aplicação. 
+O diagrama de entidades, representado na figura \ref{fig:database_model}, contém a modelagem do banco de dados da aplicação. 
 
 \begin{figure}[ht!]
 	\centering

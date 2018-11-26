@@ -10,13 +10,13 @@ const AppPage = ({ serviceCall }) => (
     <Box align="center" justify="center" background="light-3" fill>
       <ServiceCallFeedbackForm />
     </Box>
-    {serviceCall && <VideoChat room={serviceCall.customerId} />}
+    {serviceCall && <VideoChat room={serviceCall.id} />}
   </Grommet>
 );
 
 AppPage.propTypes = {
   serviceCall: PropTypes.shape({
-    customerId: PropTypes.string,
+    id: PropTypes.string,
   }),
 };
 

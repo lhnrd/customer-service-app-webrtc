@@ -159,7 +159,7 @@ export default compose(
     startedAt: serviceCall.startedAt,
   })),
   withHandlers({
-    onClickAcceptCall: ({ customer, onAcceptCall }) => () =>
-      onAcceptCall(customer.id),
+    onClickAcceptCall: ({ serviceCallId, onAcceptCall }) => () =>
+      onAcceptCall(serviceCallId),
   })
 )(ServiceCallMenuItem);

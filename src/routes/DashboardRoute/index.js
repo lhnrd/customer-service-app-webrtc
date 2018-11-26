@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
 
 import DashboardPage from 'src/pages/DashboardPage';
 import {
@@ -16,8 +15,8 @@ const mapStateToProps = state => {
   } = solvedStatisticsSelector(state);
 
   return {
-    avgCallRating: avgCallRatingSelector(state),
-    avgServiceRating: avgServiceRatingSelector(state),
+    avgCallRating: avgCallRatingSelector(state).toFixed(2),
+    avgServiceRating: avgServiceRatingSelector(state).toFixed(2),
     solvedCalls,
     notSolvedCalls,
     notAnsweredCalls,
@@ -25,4 +24,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default compose(connect(mapStateToProps))(DashboardPage);
+export default connect(mapStateToProps)(DashboardPage);

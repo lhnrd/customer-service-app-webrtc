@@ -123,7 +123,7 @@ const DashboardPage = ({
               },
               {
                 key: 'Not solved',
-                value: 0,
+                value: notSolvedCalls,
                 percentage: percentage(notSolvedCalls, totalCalls),
               },
               {

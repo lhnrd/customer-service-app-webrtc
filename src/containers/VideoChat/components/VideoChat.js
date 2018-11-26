@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { Button, Box, Layer } from 'grommet';
 import { Stretch } from 'styled-loaders-react';
 
-import LocalVideoChatOverlay from '../styles/LocalVideoChatOverlay';
+import VideoBox from '../styles/VideoBox';
+import VideoChatOverlay from '../styles/VideoChatOverlay';
 
 class VideoChat extends Component {
   constructor(props) {
@@ -63,16 +64,13 @@ class VideoChat extends Component {
           ) : (
             <Stretch color="#7D4CDB" size="100px" />
           )}
-          <LocalVideoChatOverlay>
-            <Box
+          <VideoChatOverlay>
+            <VideoBox
               align="center"
               justify="center"
               background="#000"
               elevation="xlarge"
-              style={{ position: 'absolute', bottom: '24px', right: '24px' }}
               overflow="hidden"
-              height="small"
-              width="medium"
               round
             >
               {localStream ? (
@@ -90,7 +88,7 @@ class VideoChat extends Component {
               ) : (
                 <Stretch color="#7D4CDB" size="100px" />
               )}
-            </Box>
+            </VideoBox>
             <Button
               color="status-critical"
               label="Hang up"
@@ -103,7 +101,7 @@ class VideoChat extends Component {
               onClick={onClickHangUp}
               primary
             />
-          </LocalVideoChatOverlay>
+          </VideoChatOverlay>
         </Box>
       </Layer>
     );

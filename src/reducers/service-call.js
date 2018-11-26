@@ -1,12 +1,7 @@
 import produce from 'immer';
 import { types } from 'src/actions/service-call';
 
-const {
-  ENTITY_CREATE,
-  ENTITY_DELETE,
-  ENTITY_UPDATE,
-  READ_ENTITIES_SUCCESS,
-} = types;
+const { ENTITY_CREATE, ENTITY_DELETE, ENTITY_UPDATE } = types;
 
 export const STATE_KEY = 'serviceCalls';
 
@@ -39,15 +34,9 @@ export default produce((draft, { type, payload }) => {
     case ENTITY_UPDATE: {
       const { entity } = payload;
       const { id: entityId } = entity;
-      draft.byId[entityId] = {
-        ...entity,
-      };
-      break;
-    }
-    case READ_ENTITIES_SUCCESS: {
-      const { entities, result } = payload;
-      draft.allIds = result;
-      draft.byId = { ...entities.serviceCalls };
+      Object.entries(entity).forEach(([key, value]) => {
+        draft.byId[entityId][key] = value;
+      });
       break;
     }
     // no default

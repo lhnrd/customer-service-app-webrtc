@@ -4,11 +4,15 @@ import { normalize } from 'normalizr';
 import createConstants from 'src/utils/create-constants';
 import * as schema from 'src/schemas';
 
+import { types as socketTypes } from './socket';
+
 const createServiceCallConstants = createConstants('@@service-call/');
 
 export const types = createServiceCallConstants(
   'ENTITY_CREATE',
   'ENTITY_DELETE',
+  'ENTITY_UPDATE',
+
   // READ ENTITIES
   'ENTITIES_READ_REQUEST',
   'ENTITIES_READ_SUCCESS',
@@ -16,6 +20,8 @@ export const types = createServiceCallConstants(
 );
 
 const {
+  ENTITY_UPDATE,
+
   ENTITIES_READ_REQUEST,
   ENTITIES_READ_SUCCESS,
   ENTITIES_READ_FAILURE,
@@ -39,5 +45,12 @@ export const readServiceCalls = () => ({
       },
       ENTITIES_READ_FAILURE,
     ],
+  },
+});
+
+export const updateServiceCall = data => ({
+  [socketTypes.RSSA]: {
+    event: ENTITY_UPDATE,
+    message: { data },
   },
 });

@@ -11,7 +11,7 @@ const {
 
 export const STATE_KEY = 'rtc';
 
-const CONNECTION_STATE = {
+export const CONNECTION_STATE = {
   REQUESTED: 'REQUESTED',
   DISCONNECTED: 'DISCONNECTED',
   SIGNAL_SENT: 'SIGNAL_SENT',

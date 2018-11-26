@@ -1,6 +1,8 @@
-import { RSAA } from 'redux-api-middleware';
+import { getJSON, RSAA } from 'redux-api-middleware';
+import { normalize } from 'normalizr';
 
 import createConstants from 'src/utils/create-constants';
+import * as schema from 'src/schemas';
 
 const createServiceCallConstants = createConstants('@@customers/');
 
@@ -25,7 +27,11 @@ export const readServiceCalls = () => ({
     method: 'GET',
     types: [
       ENTITIES_READ_REQUEST,
-      ENTITIES_READ_SUCCESS,
+      {
+        type: ENTITIES_READ_SUCCESS,
+        payload: (action, state, res) =>
+          getJSON(res).then(json => normalize(json, [schema.serviceCall])),
+      },
       ENTITIES_READ_FAILURE,
     ],
   },

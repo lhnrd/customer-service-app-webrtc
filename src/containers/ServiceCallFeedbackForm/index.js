@@ -37,7 +37,7 @@ const ServiceCallFeedbackForm = ({
       onChange={setServiceRating}
       stop={5}
     />
-    <Heading level="4">DID YOU SOLVED YOUR PROBLEM?</Heading>
+    <Heading level="4">DID YOU SOLVE YOUR PROBLEM?</Heading>
     <Box direction="row" gap="medium">
       <RadioButton
         label="YES"

@@ -10,17 +10,17 @@ const fadeOut = keyframes`
   }
 `;
 
-const LocalVideoChatOverlay = styled(Box).attrs({
+const VideoChatOverlay = styled(Box).attrs({
   round: true,
 })`
-  position: absolute;
-  background-color: rgba(221, 221, 221, 0.2);
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
   animation: 0.3s ${fadeOut} 3.2s ease-in forwards;
+  background-color: rgba(221, 221, 221, 0.2);
+  height: 100%;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  width: 100%;
 
   &:active,
   &:hover {
@@ -30,4 +30,4 @@ const LocalVideoChatOverlay = styled(Box).attrs({
   }
 `;
 
-export default LocalVideoChatOverlay;
+export default VideoChatOverlay;

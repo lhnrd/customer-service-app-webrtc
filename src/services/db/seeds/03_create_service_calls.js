@@ -1,7 +1,8 @@
 require('babel-core/register') // necessary to execute all imports with ES6 syntax
 
 const Model = require('objection').Model
-const createServiceCallsDry = require('../fixtures/create-service-call').createServiceCallsDry
+const createServiceCallsDry = require('../fixtures/create-service-call')
+  .createServiceCallsDry
 
 const USER_ID = require('./01_create_users').ID
 const CUSTOMER_ID = require('./02_create_customers').ID
@@ -46,23 +47,21 @@ const userOneServicesCalls = createServiceCallsDry([
     customerId: CUSTOMER_ID.customerThree
   }
 ])
-const serviceCalls = createServiceCallsDry([
-  {
-    customerId: CUSTOMER_ID.customerThree
-  }
-])
+// const serviceCalls = createServiceCallsDry([
+//   {
+//     customerId: CUSTOMER_ID.customerThree
+//   }
+// ])
 
 exports.seed = function (knex, Promise) {
   Model.knex(knex)
   const ServiceCall = require('../../../api/service-calls/model').default
-  return ServiceCall
-    .query()
+  return ServiceCall.query()
     .delete()
     .then(() => {
       return ServiceCall.query().insert([
         ...adminServiceCalls,
-        ...userOneServicesCalls,
-        ...serviceCalls
+        ...userOneServicesCalls
       ])
     })
 }

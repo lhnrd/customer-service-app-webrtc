@@ -20,16 +20,11 @@ export default io => socket => {
     delete sidToServiceCallId[socket.id]
 
     if (svcId) {
-      const svc = await ServiceCall
-        .query()
+      const svc = await ServiceCall.query()
         .findById(svcId)
         .returning('*')
-      svc
-        .$query()
-        .delete()
-        .then(() => {
-          console.log('deleted')
-        })
+
+      svc.$query().delete()
     }
   })
 
@@ -39,8 +34,7 @@ export default io => socket => {
 
   // Service call events
   socket.on(serviceCallEvents.ENTITY_CREATE, ({ data }, ack) =>
-    ServiceCall
-      .query()
+    ServiceCall.query()
       .insert(data)
       .returning('*')
       .then(entity => {
@@ -51,8 +45,7 @@ export default io => socket => {
   )
 
   socket.on(serviceCallEvents.ENTITY_UPDATE, ({ data }, ack) =>
-    ServiceCall
-      .query()
+    ServiceCall.query()
       .patch(data)
       .where('id', data.id)
       .returning('*')
@@ -65,7 +58,9 @@ export default io => socket => {
   // RTC events
   socket.on(rtcEvents.PEER_CONNECT, (message, ack) => {
     debug(`${rtcEvents.PEER_CONNECT} received`)
-    const { meta: { room } } = message
+    const {
+      meta: { room }
+    } = message
 
     socket.join(room, () => {
       debug(`joined ${room}`)
@@ -80,6 +75,8 @@ export default io => socket => {
 
     debug(`emitting ${FSA} to ${room} and ${namespace}`)
 
-    io.of(namespace).to(room).emit(FSA, message)
+    io.of(namespace)
+      .to(room)
+      .emit(FSA, message)
   })
 }

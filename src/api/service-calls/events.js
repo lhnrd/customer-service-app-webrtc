@@ -9,10 +9,14 @@ export default io => {
     })
   })
   ServiceCall.events.on('PUT', ({ data }) => {
-    io.of('/manager').emit(FSA, {
+    const action = {
       type: '@@service-call/ENTITY_UPDATE',
       payload: { entity: data }
-    })
+    }
+    io.of('/manager').emit(FSA, action)
+    io.of('/caller')
+      .to(data.id)
+      .emit(FSA, action)
   })
   ServiceCall.events.on('DELETE', ({ data }) => {
     io.of('/manager').emit(FSA, {

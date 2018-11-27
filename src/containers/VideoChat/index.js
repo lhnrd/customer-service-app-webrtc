@@ -12,6 +12,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   connectPeer: rtcActions.connectPeer,
+  disconnectPeer: rtcActions.disconnectPeer,
 };
 
 const constraints = {
@@ -45,6 +46,14 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
+  withHandlers({
+    onClickHangUp: ({ disconnectPeer, localStream }) => () => {
+      if (localStream) {
+        localStream.getTracks().forEach(track => track.stop());
+      }
+      disconnectPeer();
+    },
+  }),
   lifecycle({
     componentDidMount() {
       const { room, connectPeer } = this.props;
@@ -54,14 +63,5 @@ export default compose(
         .then(stream => connectPeer({ room, stream }))
         .catch(handleError);
     },
-    componentWillUnmount() {
-      const { localStream } = this.props;
-      if (localStream) {
-        localStream.getTracks().forEach(track => track.stop());
-      }
-    },
-  }),
-  withHandlers({
-    onClickHangUp: ({ onHangUp }) => () => onHangUp(null),
   })
 )(VideoChat);

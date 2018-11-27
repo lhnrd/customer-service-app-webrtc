@@ -30,16 +30,12 @@ export const createServiceCall = ({ customerId }) => dispatch =>
     },
   });
 
-export const updateServiceCall = data => dispatch =>
-  dispatch({
-    [RSSA]: {
-      event: ENTITY_UPDATE,
-      message: { data },
-      ack: (_, entity) => {
-        dispatch({ type: ENTITY_UPDATE, payload: { entity } });
-      },
-    },
-  });
+export const updateServiceCall = data => ({
+  [RSSA]: {
+    event: ENTITY_UPDATE,
+    message: { data },
+  },
+});
 
 export const deleteServiceCall = ({ serviceCallId }) => ({
   [RSSA]: {

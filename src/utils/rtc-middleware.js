@@ -1,8 +1,14 @@
 import Peer from 'simple-peer';
 
-import { setPeer, setStream, sendSignal, types } from 'src/actions/rtc';
+import {
+  disconnectPeer,
+  setPeer,
+  setStream,
+  sendSignal,
+  types,
+} from 'src/actions/rtc';
 
-const { PEER_CONNECT, SIGNAL_RECEIVE } = types;
+const { PEER_CONNECT, PEER_DISCONNECT, SIGNAL_RECEIVE } = types;
 
 const rtcMiddleware = ({ dispatch }) => {
   let peer;
@@ -22,7 +28,14 @@ const rtcMiddleware = ({ dispatch }) => {
         peer.on('connect', () => dispatch(setPeer(peer)));
         peer.on('stream', peerStream => dispatch(setStream(peerStream)));
 
+        peer.on('close', () => next(disconnectPeer()));
+        peer.on('error', err => dispatch(disconnectPeer({ err })));
+
         break;
+      }
+      case PEER_DISCONNECT: {
+        peer.destroy();
+        return;
       }
       case SIGNAL_RECEIVE: {
         const { signal } = payload;

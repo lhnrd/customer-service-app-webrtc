@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { Box, Heading, RadioButton, Button } from 'grommet';
 import Rating from 'react-rating';
 import { Star } from 'grommet-icons';
-import { withStateHandlers } from 'recompose';
+import { connect } from 'react-redux';
+import { compose, withHandlers, withStateHandlers } from 'recompose';
+
+import * as serviceCallActions from 'src/actions/service-call';
 
 const validate = ({ callRating, serviceRating, isSolved }) => {
   if (callRating === 0) return false;
@@ -19,8 +22,9 @@ const ServiceCallFeedbackForm = ({
   setCallRating,
   setIsSolved,
   setServiceRating,
+  onSubmit,
 }) => (
-  <form>
+  <form onSubmit={onSubmit}>
     <Heading level="4">CALL</Heading>
     <Rating
       emptySymbol={<Star />}
@@ -58,6 +62,7 @@ const ServiceCallFeedbackForm = ({
       color="status-ok"
       label="Send feedback"
       margin={{ top: 'medium' }}
+      type="submit"
       disabled={!validate({ callRating, serviceRating, isSolved })}
       primary
     />
@@ -71,25 +76,51 @@ ServiceCallFeedbackForm.propTypes = {
   setCallRating: PropTypes.func.isRequired,
   setIsSolved: PropTypes.func.isRequired,
   setServiceRating: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 ServiceCallFeedbackForm.defaultProps = {};
 
-export default withStateHandlers(
-  {
-    callRating: 0,
-    serviceRating: 0,
-    isSolved: false,
-  },
-  {
-    setServiceRating: () => value => ({
-      serviceRating: value,
-    }),
-    setCallRating: () => value => ({
-      callRating: value,
-    }),
-    setIsSolved: () => event => ({
-      isSolved: event.target.value,
-    }),
-  }
+export default compose(
+  connect(
+    null,
+    {
+      updateServiceCall: serviceCallActions.updateServiceCall,
+    }
+  ),
+  withStateHandlers(
+    {
+      callRating: 0,
+      serviceRating: 0,
+      isSolved: false,
+    },
+    {
+      setServiceRating: () => value => ({
+        serviceRating: value,
+      }),
+      setCallRating: () => value => ({
+        callRating: value,
+      }),
+      setIsSolved: () => event => ({
+        isSolved: event.target.value,
+      }),
+    }
+  ),
+  withHandlers({
+    onSubmit: ({
+      updateServiceCall,
+      id,
+      serviceRating,
+      callRating,
+      isSolved,
+    }) => evt => {
+      updateServiceCall({
+        id,
+        serviceRating,
+        callRating,
+        isSolved: isSolved === 'solved',
+      });
+      evt.preventDefault();
+    },
+  })
 )(ServiceCallFeedbackForm);

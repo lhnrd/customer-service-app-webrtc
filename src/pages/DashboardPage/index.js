@@ -145,8 +145,8 @@ const DashboardPage = ({
 );
 
 DashboardPage.propTypes = {
-  avgCallRating: PropTypes.number,
-  avgServiceRating: PropTypes.number,
+  avgCallRating: PropTypes.string,
+  avgServiceRating: PropTypes.string,
   notAnsweredCalls: PropTypes.number,
   notSolvedCalls: PropTypes.number,
   solvedCalls: PropTypes.number,

@@ -43,7 +43,7 @@ const AppPage = ({ serviceCallRoom, serviceCalls, setServiceCallRoom }) => (
           <ServiceCallBox
             key={serviceCall.id}
             serviceCall={serviceCall}
-            onAcceptCall={setServiceCallRoom}
+            onAcceptCall={serviceCallId => setServiceCallRoom(serviceCallId)}
           />
         ))}
       </Box>
@@ -60,7 +60,10 @@ const AppPage = ({ serviceCallRoom, serviceCalls, setServiceCallRoom }) => (
       </Box>
     </Grid>
     {serviceCallRoom && (
-      <VideoChat room={serviceCallRoom} onHangUp={setServiceCallRoom} />
+      <VideoChat
+        room={serviceCallRoom}
+        onHangUp={() => setServiceCallRoom(null)}
+      />
     )}
   </Grommet>
 );

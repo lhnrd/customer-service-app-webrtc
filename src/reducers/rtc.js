@@ -3,6 +3,7 @@ import { types } from 'src/actions/rtc';
 
 const {
   PEER_CONNECT,
+  PEER_DISCONNECT,
   PEER_SET,
   STREAM_SET,
   SIGNAL_RECEIVE,
@@ -33,6 +34,12 @@ const reducer = immerReducer(
     [PEER_CONNECT]: (state, payload) => {
       state.localStream = payload.stream;
       state.connectionState = CONNECTION_STATE.REQUESTED;
+    },
+    [PEER_DISCONNECT]: state => {
+      state.localStream = null;
+      state.remoteStream = null;
+      state.peer = null;
+      state.connectionState = CONNECTION_STATE.DISCONNECTED;
     },
     [PEER_SET]: (state, payload) => {
       state.peer = payload.peer;

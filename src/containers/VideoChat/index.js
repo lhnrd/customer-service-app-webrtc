@@ -18,6 +18,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   connectPeer: rtcActions.connectPeer,
+  disconnectPeer: rtcActions.disconnectPeer,
   updateServiceCall: serviceCallActions.updateServiceCall,
 };
 
@@ -26,6 +27,14 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
+  withHandlers({
+    onClickHangUp: ({ disconnectPeer, localStream }) => () => {
+      if (localStream) {
+        localStream.getTracks().forEach(track => track.stop());
+      }
+      disconnectPeer();
+    },
+  }),
   lifecycle({
     componentDidMount() {
       const { room, connectPeer } = this.props;
@@ -43,23 +52,28 @@ export default compose(
         });
     },
     componentDidUpdate(prevProps) {
-      const { rtcConnectionState, room, user, updateServiceCall } = this.props;
+      const {
+        onHangUp,
+        rtcConnectionState,
+        room,
+        user,
+        updateServiceCall,
+      } = this.props;
 
       if (
         rtcConnectionState !== prevProps.rtcConnectionState &&
-        rtcConnectionState === RTC_CONNECTION_STATE.REQUESTED
+        rtcConnectionState === RTC_CONNECTION_STATE.CONNECTED
       ) {
         updateServiceCall({ id: room, userId: user.id, startedAt: new Date() });
       }
-    },
-    componentWillUnmount() {
-      const { localStream } = this.props;
-      if (localStream) {
-        localStream.getTracks().forEach(track => track.stop());
+
+      if (
+        prevProps.rtcConnectionState === RTC_CONNECTION_STATE.CONNECTED &&
+        rtcConnectionState === RTC_CONNECTION_STATE.DISCONNECTED
+      ) {
+        updateServiceCall({ id: room, endedAt: new Date() });
+        onHangUp();
       }
     },
-  }),
-  withHandlers({
-    onClickHangUp: ({ onHangUp }) => () => onHangUp(null),
   })
 )(VideoChat);

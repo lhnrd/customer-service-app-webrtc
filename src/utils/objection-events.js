@@ -42,10 +42,11 @@ module.exports = Model => {
 
     $afterUpdate (...args) {
       return Promise.resolve(super.$afterUpdate(...args))
-        .then(() => {
+        .then(() => this.$query().returning('*'))
+        .then(instance => {
           const { events } = this.constructor
           if (events) {
-            events.emit('PUT', { data: this.toJSON() })
+            events.emit('PUT', { data: instance.toJSON() })
           }
         })
     }

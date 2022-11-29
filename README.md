@@ -1,6 +1,6 @@
-# SAC WebRTC Undergraduate Final Project
+# Customer Service Application with WebRTC
 
-...
+Undergraduate Final Project
 
 ![Application Use Cases](./thesis/figures/usecases.png)
 
